@@ -3,12 +3,7 @@ Emile Villette - October 2020
 Automatic daily email updates on the COVID-19 situation in Belgium
 """
 
-import dailyDirectory
-import downloadFile
-
-# Get daily file path
-path = dailyDirectory.daily_directory()
-print(path)
+import Downloader as dl
 
 countries_to_track = [
     ["IT", "Italie"],
@@ -43,8 +38,5 @@ countries_to_track = [
     ["CL", "Chili"]
 ]
 
-# Download today's files from https://corona.lmao.ninja/v2/countries?yesterday&sort
-downloadFile.download_file('https://corona.lmao.ninja/v2/countries?yesterday&sort', 'AA_RawData', path)
-
-for country in countries_to_track:
-    downloadFile.download_file('https://corona.lmao.ninja/v2/countries/' + country[0] + "?yesterday", country[0], path)
+if __name__=="__main__":
+    dl.download_stats(countries_to_track)
