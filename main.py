@@ -6,6 +6,7 @@ Automatic daily email updates on the COVID-19 situation in Belgium
 """
 
 import Downloader as dl
+import recap_generator_fr as rgfr
 
 countries_to_track = [
     ["IT", "Italie"],
@@ -41,4 +42,5 @@ countries_to_track = [
 ]
 
 if __name__ == "__main__":
-    dl.download_stats(countries_to_track)
+    path = dl.download_stats(countries_to_track) + "/"
+    print(rgfr.generate_recap("AA_Daily_recap.coviddata", path, countries_to_track))

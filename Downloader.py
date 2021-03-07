@@ -33,6 +33,6 @@ def download_stats(countries_to_track):
 
     recap_countries_to_request.rstrip(",")
     downloadFile.download_file('https://corona.lmao.ninja/v2/countries/' + recap_countries_to_request + "?yesterday",
-                               ".coviddata", "AADAILY_Recap", path)
+                               ".coviddata", "AA_DAILY_Recap", path)
 
-    return None
+    return path
