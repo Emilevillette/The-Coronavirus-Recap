@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Emile Villette - October 2020
 Automatic daily email updates on the COVID-19 situation in Belgium
@@ -38,5 +40,5 @@ countries_to_track = [
     ["CL", "Chili"]
 ]
 
-if __name__=="__main__":
+if __name__ == "__main__":
     dl.download_stats(countries_to_track)

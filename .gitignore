@@ -6,3 +6,6 @@ venv/
 .idea/vcs.xml
 *.coviddata
 __pycache__/Downloader.cpython-39.pyc
+*.pyc
+__pycache__/downloadFile.cpython-39.pyc
+__pycache__/dailyDirectory.cpython-39.pyc
