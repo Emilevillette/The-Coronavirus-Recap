@@ -15,4 +15,3 @@ print(path)
 # Confirmed cases by date, age, sex and province
 downloadFile.download_file('https://corona.lmao.ninja/v2/countries?yesterday&sort', 'RAW_DATA',
                            path)
-

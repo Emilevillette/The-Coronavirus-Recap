@@ -1,0 +1,6 @@
+data/
+__pychache__/
+venv/
+.idea/
+.idea/vcs.xml
+.idea/vcs.xml
