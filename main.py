@@ -11,7 +11,7 @@ path = dailyDirectory.daily_directory()
 print(path)
 
 countries_to_track = [
-    ["IT","Italie"],
+    ["IT", "Italie"],
     ["ES", "Espagne"],
     ["FR", "France"],
     ["BE", "Belgique"],
@@ -44,8 +44,7 @@ countries_to_track = [
 ]
 
 # Download today's files from https://corona.lmao.ninja/v2/countries?yesterday&sort
-# Confirmed cases by date, age, sex and province
-downloadFile.download_file('https://corona.lmao.ninja/v2/countries?yesterday&sort', 'AA_RawData',
-                           path)
+downloadFile.download_file('https://corona.lmao.ninja/v2/countries?yesterday&sort', 'AA_RawData', path)
+
 for country in countries_to_track:
     downloadFile.download_file('https://corona.lmao.ninja/v2/countries/' + country[0] + "?yesterday", country[0], path)
