@@ -8,8 +8,10 @@ Emile Villette - March 2021
 import yagmail
 
 
-def send_email(subject, content, sender, recipient, OAUTH2):
-    yag = yagmail.SMTP(sender, oauth2_file=OAUTH2)
+def send_email(subject, content, sender, recipient):
 
-    with yag:
-        yag.send(recipient, subject, content)
+    new_content = "Chèr(e) {},\n Voici votre récap quotidien sur la situation pandémique dans les pays que vous avez " \
+              "demandés:\n".format(recipient.split("@")[0]) + content
+    with yagmail.SMTP(sender) as yag:
+        yag.send(recipient, subject, new_content)
+    yag.close()

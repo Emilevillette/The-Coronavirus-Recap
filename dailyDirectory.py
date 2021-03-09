@@ -15,7 +15,7 @@ def daily_directory(path=""):
     :param path: a string specifying the path where to create the daily path (defaults as ../data/aaaa-mm-jj
     :return: the path (as a string)
     """
-    today = 'data/' + str(date.today())
+    today = path + 'data/' + str(date.today())
 
     if not os.path.exists(today):
         os.makedirs(today)

@@ -23,16 +23,18 @@ def download_stats(countries_to_track):
     # Recap file
     recap_countries_to_request = ""
 
-    # Download today's files from https://corona.lmao.ninja/v2/countries?yesterday&sort
-    downloadFile.download_file('https://corona.lmao.ninja/v2/countries?yesterday&sort', '.coviddata', 'AA_RawData', path)
+    # Download today's files from https://disease.sh/v3/covid-19/countries
+    downloadFile.download_file('https://disease.sh/v3/covid-19/countries', '.coviddata', 'AA_RawData', path)
 
     for country in range(len(countries_to_track)):
         ISO_code = countries_to_track[country][0]
-        downloadFile.download_file('https://corona.lmao.ninja/v2/countries/' + ISO_code + "?yesterday", ".coviddata", ISO_code, path)
+        downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + ISO_code, ".coviddata", ISO_code, path)
         recap_countries_to_request += ISO_code + ","
 
     recap_countries_to_request.rstrip(",")
-    downloadFile.download_file('https://corona.lmao.ninja/v2/countries/' + recap_countries_to_request + "?yesterday",
+    downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + recap_countries_to_request,
                                ".coviddata", "AA_DAILY_Recap", path)
+
+    downloadFile.download_file('https://disease.sh/v3/covid-19/all', ".coviddata", "AA_DAILY_TOTAL", path)
 
     return path
