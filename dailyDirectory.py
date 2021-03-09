@@ -19,4 +19,5 @@ def daily_directory(path=""):
 
     if not os.path.exists(today):
         os.makedirs(today)
+        os.makedirs(today + "/vaccine")
     return today

@@ -47,5 +47,5 @@ if __name__ == "__main__":
     path = dl.download_stats(countries_to_track) + "/"
     recap_fr = rgfr.generate_recap("AA_Daily_recap.coviddata", path, countries_to_track, 'AA_DAILY_TOTAL.coviddata')
     print(recap_fr)
-    #email.send_email("Recap Coronavirus " + str(date.today()), recap_fr, 'coronarecap@gmail.com',
+    # email.send_email("Recap Coronavirus " + str(date.today()), recap_fr, 'coronarecap@gmail.com',
     #                 'aurore.idee@gmail.com')

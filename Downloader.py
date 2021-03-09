@@ -29,6 +29,10 @@ def download_stats(countries_to_track):
     for country in range(len(countries_to_track)):
         ISO_code = countries_to_track[country][0]
         downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + ISO_code, ".coviddata", ISO_code, path)
+        downloadFile.download_file(
+            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/" + ISO_code + "?lastdays=2",
+            ".coviddata", ISO_code + "_VACCINE", path + "/vaccine")
+
         recap_countries_to_request += ISO_code + ","
 
     recap_countries_to_request.rstrip(",")
@@ -36,5 +40,8 @@ def download_stats(countries_to_track):
                                ".coviddata", "AA_DAILY_Recap", path)
 
     downloadFile.download_file('https://disease.sh/v3/covid-19/all', ".coviddata", "AA_DAILY_TOTAL", path)
+
+    downloadFile.download_file('https://disease.sh/v3/covid-19/vaccine/coverage/countries/?lastdays=2', ".coviddata",
+                               "AA_DAILY_TOTAL_VACCINE", path + "/vaccine")
 
     return path

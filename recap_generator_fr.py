@@ -23,11 +23,23 @@ def generate_recap(recap_file, path, country_list, total):
     with open(path + recap_file, "r") as file:
         data = json.loads(file.read())
 
-    sentence = "{}: {:n} morts et {:n} nouveaux cas\n"
+    case_sentence = "{}: {:n} morts et {:n} nouveaux cas.\n"
+    vaccine_sentence = "  {:n} doses de vaccin administrées (+ {:n}).\n"
+
     recap = ""
 
     for country in range(len(data)):
-        recap += sentence.format(country_list[country][1], data[country]["todayDeaths"], data[country]["todayCases"])
+        with open(path + "/vaccine/" + country_list[country][0] + "_VACCINE.coviddata", "r") as vaccine_file:
+            vaccine_data = json.loads(vaccine_file.read())
+
+        vaccine_delta = []
+        for day in vaccine_data["timeline"].values():
+            vaccine_delta.append(day)
+        recap += case_sentence.format(country_list[country][1], data[country]["todayDeaths"],
+                                      data[country]["todayCases"])
+        recap += " " * len(country_list[country][1]) + vaccine_sentence.format(vaccine_delta[1],
+                                                                               int(vaccine_delta[1]) - int(
+                                                                                   vaccine_delta[0]))
 
     with open(path + total, 'r') as file2:
         total_cases = json.loads(file2.read())
