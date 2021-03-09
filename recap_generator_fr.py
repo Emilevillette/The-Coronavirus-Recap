@@ -24,7 +24,7 @@ def generate_recap(recap_file, path, country_list, total):
         data = json.loads(file.read())
 
     case_sentence = "{}: {:n} morts et {:n} nouveaux cas.\n"
-    vaccine_sentence = "  {:n} doses de vaccin administrées (+ {:n}).\n"
+    vaccine_sentence = "  {:n} doses de vaccin administrées (+ {:n}).\n\n"
 
     recap = ""
 
@@ -43,9 +43,19 @@ def generate_recap(recap_file, path, country_list, total):
 
     with open(path + total, 'r') as file2:
         total_cases = json.loads(file2.read())
-    recap += "{:n} (+{:n}) cas et {:n} (+{:n}) morts dans le monde.\n".format(total_cases["cases"],
-                                                                              total_cases["todayCases"],
-                                                                              total_cases["deaths"],
-                                                                              total_cases["todayDeaths"])
+    recap += "\n{:n} (+{:n}) cas et {:n} (+{:n}) morts dans le monde.\n".format(total_cases["cases"],
+                                                                                total_cases["todayCases"],
+                                                                                total_cases["deaths"],
+                                                                                total_cases["todayDeaths"])
+    with open(path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.coviddata", "r") as vaccine_total_file:
+        total_vaccine = json.loads(vaccine_total_file.read())
+
+    total_vaccine_data = []
+    for global_vaccine in total_vaccine.values():
+        total_vaccine_data.append(global_vaccine)
+    recap += "{:n} vaccins ont été administrés au total dans le monde (+{:n} aujourd'hui).\n".format(
+        total_vaccine_data[1], int(total_vaccine_data[1]) - int(total_vaccine_data[0]))
+
+    recap += "\nN.B.: Les chiffres de vaccination ne sont pas mis a jour quotidiennement, c'est donc normal si il y a beaucoup de pays sans nouvelles vaccinations."
 
     return recap

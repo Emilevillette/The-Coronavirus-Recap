@@ -44,4 +44,7 @@ def download_stats(countries_to_track):
     downloadFile.download_file('https://disease.sh/v3/covid-19/vaccine/coverage/countries/?lastdays=2', ".coviddata",
                                "AA_DAILY_TOTAL_VACCINE", path + "/vaccine")
 
+    downloadFile.download_file('https://disease.sh/v3/covid-19/vaccine/coverage?lastdays=2', ".coviddata",
+                               "AA_DAILY_TOTAL_GLOBAL_VACCINE", path + "/vaccine")
+
     return path
