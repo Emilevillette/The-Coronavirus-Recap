@@ -9,23 +9,28 @@ import json
 import locale
 
 
-def generate_recap(recap_file, path, country_list, total):
+def generate_recap(language, recap_file, path, country_list, total):
     """
 
+    :param language: language of the email
     :param total: the filename with the total cases in it
     :param recap_file: The recap file's name (with the extension) (string)
     :param path: the directory with the recap file in it (string)
     :param country_list: list of the countries with the ISO codes and the translations
     :return: recap, a string of the daily recap.
     """
+    # Set locale separator to the local preference
     locale.setlocale(locale.LC_ALL, '')
 
+    # Open json file with list of chosen countries
     with open(path + recap_file, "r") as file:
         data = json.loads(file.read())
 
-    case_sentence = "{}: {:n} morts et {:n} nouveaux cas.\n"
-    critical_sentence = "{} personnes sont actuellement en état critique.\n"
-    vaccine_sentence = "  {:n} doses de vaccin administrées (+ {:n}).\n\n"
+    with open('languages/' + language + ".json", "r", encoding="utf-8") as language_file:
+        language_data = json.load(language_file)
+        case_sentence = language_data["cases"] + "\n"
+        critical_sentence = language_data["critical"] + "\n"
+        vaccine_sentence = language_data["vaccine"] + "\n\n"
 
     recap = ""
 
@@ -48,10 +53,10 @@ def generate_recap(recap_file, path, country_list, total):
 
     with open(path + total, 'r') as file2:
         total_cases = json.loads(file2.read())
-    recap += "{:n} (+{:n}) cas et {:n} (+{:n}) morts dans le monde.\n".format(total_cases["cases"],
-                                                                                total_cases["todayCases"],
-                                                                                total_cases["deaths"],
-                                                                                total_cases["todayDeaths"])
+    recap += language_data["global_cases"].format(total_cases["cases"],
+                                                  total_cases["todayCases"],
+                                                  total_cases["deaths"],
+                                                  total_cases["todayDeaths"]) + "\n"
 
     with open(path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.coviddata", "r") as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
@@ -62,10 +67,9 @@ def generate_recap(recap_file, path, country_list, total):
         total_vaccine_data.append(global_vaccine)
 
     if int(total_vaccine_data[1]) - int(total_vaccine_data[0]) > 0:
-        recap += "{:n} vaccins ont été administrés au total dans le monde (+{:n} aujourd'hui).\n".format(
-            total_vaccine_data[1], int(total_vaccine_data[1]) - int(total_vaccine_data[0]))
+        recap += language_data["global_vaccine"].format(
+            total_vaccine_data[1], int(total_vaccine_data[1]) - int(total_vaccine_data[0])) + "\n"
 
-    recap += "\nN.B.: Les chiffres de vaccination ne sont pas mis a jour quotidiennement, c'est donc normal si il y a " \
-             "beaucoup de pays sans nouvelles vaccinations. "
+    recap += "\n" + language_data["vaccine_warning"]
 
     return recap

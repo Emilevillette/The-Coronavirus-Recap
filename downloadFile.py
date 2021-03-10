@@ -17,8 +17,10 @@ def download_file(url, file_extension, category, path):
     :param path: The path on the local machine (string)
     :return: None
     """
+    # Get content from the desired webpage
     r = requests.get(url, stream=True)
 
+    # Store acquired content in file in the desired path
     with open(path + "/" + category + file_extension, "wb") as f:
         for chunk in r.iter_content(chunk_size=1024):
             if chunk:

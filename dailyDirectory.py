@@ -18,6 +18,8 @@ def daily_directory(path=""):
     today = path + 'data/' + str(date.today())
 
     if not os.path.exists(today):
+        # Create main folder
         os.makedirs(today)
+        # Create vaccine sub-folder
         os.makedirs(today + "/vaccine")
     return today
