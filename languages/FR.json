@@ -4,5 +4,6 @@
   "vaccine": "{:n} doses de vaccin administrées (+ {:n}).",
   "global_cases": "{:n} (+{:n}) cas et {:n} (+{:n}) morts dans le monde.",
   "global_vaccine": "{:n} vaccins ont été administrés au total dans le monde (+{:n} aujourd'hui).",
-  "vaccine_warning": "N.B.: Les chiffres de vaccination ne sont pas mis a jour quotidiennement, c'est donc normal si il y a beaucoup de pays sans nouvelles vaccinations."
+  "vaccine_warning": "N.B.: Les chiffres de vaccination ne sont pas mis a jour quotidiennement, c'est donc normal si il y a beaucoup de pays sans nouvelles vaccinations.",
+  "email_header": "Chèr(e) {},\n Voici votre récap quotidien sur la situation pandémique dans les pays que vous avez demandés:"
 }

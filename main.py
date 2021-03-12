@@ -6,7 +6,7 @@ Automatic daily email updates on the COVID-19 situation in Belgium
 """
 
 from Downloader import download_stats
-from recap_generator_fr import generate_recap
+from recap_generator import generate_recap
 from emailSender import send_email
 from datetime import date
 
@@ -45,7 +45,7 @@ countries_to_track = [
 
 if __name__ == "__main__":
     path = download_stats(countries_to_track) + "/"
-    recap_fr = generate_recap("FR", "AA_Daily_recap.coviddata", path, countries_to_track, 'AA_DAILY_TOTAL.coviddata')
-    print(recap_fr)
-    # send_email("Recap Coronavirus " + str(date.today()), recap_fr, 'coronarecap@gmail.com',
+    recap = generate_recap("FR", "AA_Daily_recap.coviddata", path, countries_to_track, 'AA_DAILY_TOTAL.coviddata')
+    print(recap)
+    #send_email("FR", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
     #           'aurore.idee@gmail.com')

@@ -23,3 +23,13 @@ def daily_directory(path=""):
         # Create vaccine sub-folder
         os.makedirs(today + "/vaccine")
     return today
+
+
+def create_directory(path):
+    """Create a directory
+
+    :param path: directory path
+    :return: None
+    """
+    if not os.path.exists(path):
+        os.makedirs(path)

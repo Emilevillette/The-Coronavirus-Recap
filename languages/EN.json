@@ -1,8 +1,9 @@
 {
-  "cases":"{}: {:n} deaths and {:n} new cases.",
+  "cases": "{}: {:n} deaths and {:n} new cases.",
   "critical": "{:n} people are in a critical state right now.",
   "vaccine": "{:n} doses of vaccine administrated (+ {:n}).",
   "global_cases": "{:n} (+{:n}) cases and {:n} (+{:n}) deaths worldwide.",
   "global_vaccine": "{:n} vaccines have been administrated globally (+{:n} today).",
-  "vaccine_warning": "N.B.: Worldometers' vaccine data isn't updated on a daily basis, thus it's normal to have a lot of countries without new vaccinations."
+  "vaccine_warning": "N.B.: Worldometers' vaccine data isn't updated on a daily basis, thus it's normal to have a lot of countries without new vaccinations.",
+  "email_header": "Dear {},\n Here is your daily COVID-19 recap (according to your chosen countries):"
 }

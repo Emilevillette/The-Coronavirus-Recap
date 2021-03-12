@@ -7,7 +7,7 @@ N.B.: If run multiple times in a day, updates the existing ".coviddata" files.
 
 Emile Villette - March 2021
 """
-import dailyDirectory
+import directoryManager
 import downloadFile
 
 
@@ -18,7 +18,8 @@ def download_stats(countries_to_track):
     :return: None
     """
     # Get daily file path
-    path = dailyDirectory.daily_directory()
+    path = directoryManager.daily_directory()
+    path = directoryManager.daily_directory()
 
     # Recap file
     recap_countries_to_request = ""

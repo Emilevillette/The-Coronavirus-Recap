@@ -26,12 +26,14 @@ def generate_recap(language, recap_file, path, country_list, total):
     with open(path + recap_file, "r") as file:
         data = json.loads(file.read())
 
+    # Open json file with the language data in it, according to the user's preferred language
     with open('languages/' + language + ".json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
         case_sentence = language_data["cases"] + "\n"
         critical_sentence = language_data["critical"] + "\n"
         vaccine_sentence = language_data["vaccine"] + "\n\n"
 
+    # Empty string for the daily recap
     recap = ""
 
     for country in range(len(data)):
@@ -51,8 +53,9 @@ def generate_recap(language, recap_file, path, country_list, total):
         else:
             recap += "\n"
 
-    with open(path + total, 'r') as file2:
-        total_cases = json.loads(file2.read())
+    with open(path + total, 'r') as total_file:
+        total_cases = json.loads(total_file.read())
+
     recap += language_data["global_cases"].format(total_cases["cases"],
                                                   total_cases["todayCases"],
                                                   total_cases["deaths"],
