@@ -37,7 +37,7 @@ def generate_recap(language, recap_file, path, country_list, total):
     recap = ""
 
     for country in range(len(data)):
-        with open(path + "/vaccine/" + country_list[country][0] + "_VACCINE.coviddata", "r") as vaccine_file:
+        with open(path + "/vaccine/" + country_list[country][0] + "_VACCINE.json", "r") as vaccine_file:
             vaccine_data = json.loads(vaccine_file.read())
 
         vaccine_delta = []
@@ -61,7 +61,7 @@ def generate_recap(language, recap_file, path, country_list, total):
                                                   total_cases["deaths"],
                                                   total_cases["todayDeaths"]) + "\n"
 
-    with open(path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.coviddata", "r") as vaccine_total_file:
+    with open(path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r") as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
 
     total_vaccine_data = []

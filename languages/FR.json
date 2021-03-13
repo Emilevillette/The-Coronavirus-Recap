@@ -1,5 +1,5 @@
 {
-  "cases":"{}: {:n} morts et {:n} nouveaux cas.",
+  "cases": "{}: {:n} morts et {:n} nouveaux cas.",
   "critical": "{:n} personnes sont actuellement en état critique.",
   "vaccine": "{:n} doses de vaccin administrées (+ {:n}).",
   "global_cases": "{:n} (+{:n}) cas et {:n} (+{:n}) morts dans le monde.",

@@ -44,8 +44,9 @@ countries_to_track = [
 ]
 
 if __name__ == "__main__":
+    download_stats(countries_to_track, yesterday=True)
     path = download_stats(countries_to_track) + "/"
-    recap = generate_recap("FR", "AA_Daily_recap.coviddata", path, countries_to_track, 'AA_DAILY_TOTAL.coviddata')
+    recap = generate_recap("FR", "AA_Daily_recap.json", path, countries_to_track, 'AA_DAILY_TOTAL.json')
     print(recap)
-    #send_email("FR", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
+    # send_email("FR", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
     #           'aurore.idee@gmail.com')

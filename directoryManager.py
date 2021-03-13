@@ -6,16 +6,20 @@ create directory every day named "aaaa-mm-jj"
 Emile Villette - March 2021
 """
 import os
-from datetime import date
+from datetime import date, timedelta
 
 
-def daily_directory(path=""):
+def daily_directory(path="", yesterday=False):
     """Creates a directory named "aaaa-mm-jj" in /data/aaaa-mm-jj
 
+    :param yesterday: return yesterday's path
     :param path: a string specifying the path where to create the daily path (defaults as ../data/aaaa-mm-jj
     :return: the path (as a string)
     """
-    today = path + 'data/' + str(date.today())
+    if yesterday:
+        today = path + 'data/' + str(date.today() - timedelta(days=1))
+    else:
+        today = path + 'data/' + str(date.today())
 
     if not os.path.exists(today):
         # Create main folder
