@@ -1,0 +1,12 @@
+{
+  "uuid": "some_uuid",
+  "email": "example@foo.bar",
+  "language": "iso",
+  "preferences": {
+    "countries": "EX,FR,BE",
+    "vaccine detail": "FR,BE",
+    "critical": "FR",
+    "active cases per 100k": "EX,FR",
+    "recovered today": "BE"
+  }
+}

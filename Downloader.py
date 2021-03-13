@@ -35,19 +35,19 @@ def download_stats(countries_to_track, yesterday=False):
 
     for country in range(len(countries_to_track)):
         # Get the ISO_code from the user's desired country list
-        ISO_code = countries_to_track[country][0]
+        iso_code = countries_to_track[country][0]
 
         # Download the "country"'s daily data
-        downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + ISO_code + url_yesterday, ".json",
-                                   ISO_code, path)
+        downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday, ".json",
+                                   iso_code, path)
 
         # Download the "country"'s vaccine data in the last two days.
         downloadFile.download_file(
-            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/" + ISO_code + "?lastdays=2",
-            ".json", ISO_code + "_VACCINE", path + "/vaccine")
+            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/" + iso_code + "?lastdays=2",
+            ".json", iso_code + "_VACCINE", path + "/vaccine")
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
-        recap_countries_to_request += ISO_code + ","
+        recap_countries_to_request += iso_code + ","
 
     # Remove the most right comma from the recap_countries_to_request
     recap_countries_to_request.rstrip(",")

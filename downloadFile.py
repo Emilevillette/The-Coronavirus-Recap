@@ -25,5 +25,3 @@ def download_file(url, file_extension, category, path):
         for chunk in r.iter_content(chunk_size=1024):
             if chunk:
                 f.write(chunk)
-
-

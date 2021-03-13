@@ -5,14 +5,14 @@ Sends email to unique mails, NOT meant for mass email sending.
 
 Emile Villette - March 2021
 """
-import yagmail
 import json
+import yagmail
 
 
 def send_email(language, subject, content, sender, recipient):
     """Send an email.
 
-    :param language: user's prefered language (ISO code, string)
+    :param language: user's preferred language (ISO code, string)
     :param subject: Email subject
     :param content: Email content
     :param sender: sender email
