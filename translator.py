@@ -3,7 +3,7 @@ Translate a text using Google Translate
 
 Emile Villette - March 2021
 """
-#IMPORTANT, AS OF 16/03/2021
+# IMPORTANT, AS OF 16/03/2021
 import googletrans
 
 
