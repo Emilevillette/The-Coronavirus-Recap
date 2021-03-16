@@ -1,2 +1,2 @@
 # The Coronavirus Journal
- Coronavirus Tracker using worldometer's API
+ Coronavirus Tracker using Worldometer's API
