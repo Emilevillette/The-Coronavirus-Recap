@@ -9,6 +9,8 @@ Emile Villette - March 2021
 """
 import directoryManager
 import downloadFile
+import os
+import json
 
 
 def download_stats(countries_to_track, yesterday=False):
@@ -37,9 +39,20 @@ def download_stats(countries_to_track, yesterday=False):
         # Get the ISO_code from the user's desired country list
         iso_code = countries_to_track[country][0]
 
-        # Download the "country"'s daily data
-        downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday, ".json",
-                                   iso_code, path)
+        if os.path.exists(path + "/" + iso_code + ".json"):
+
+            with open(path + "/" + iso_code + ".json") as update_check:
+                update_data = json.load(update_check)
+
+            if update_data["todayCases"] == 0 and update_data["todayDeaths"] == 0:
+                downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday,
+                                           ".json",
+                                           iso_code, path)
+
+        else:
+            # Download the "country"'s daily data
+            downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday, ".json",
+                                       iso_code, path)
 
         # Download the "country"'s vaccine data in the last two days.
         downloadFile.download_file(
