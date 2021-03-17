@@ -9,10 +9,9 @@ import json
 import locale
 
 
-def generate_recap(language, recap_file, path, country_list, total):
+def generate_recap(recap_file, path, country_list, total):
     """
 
-    :param language: language of the email
     :param total: the filename with the total cases in it
     :param recap_file: The recap file's name (with the extension) (string)
     :param path: the directory with the recap file in it (string)
@@ -27,7 +26,7 @@ def generate_recap(language, recap_file, path, country_list, total):
         data = json.loads(file.read())
 
     # Open json file with the language data in it, according to the user's preferred language
-    with open('languages/' + language + ".json", "r", encoding="utf-8") as language_file:
+    with open("languages/EN.json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
         case_sentence = language_data["cases"] + "\n"
         critical_sentence = language_data["critical"] + "\n"

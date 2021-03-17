@@ -11,34 +11,34 @@ from emailSender import send_email
 from datetime import date
 
 countries_to_track = [
-    ["IT", "Italie"],
-    ["ES", "Espagne"],
+    ["IT", "Italy"],
+    ["ES", "Spain"],
     ["FR", "France"],
-    ["BE", "Belgique"],
-    ["US", "Etats-Unis"],
+    ["BE", "Belgium"],
+    ["US", "United States"],
     ["CA", "Canada"],
-    ["UK", "Royaume-Uni"],
-    ["NL", "Pays-Bas"],
-    ["DE", "Allemagne"],
+    ["UK", "United Kingdoms"],
+    ["NL", "The Netherlands"],
+    ["DE", "Germany"],
     ["PT", "Portugal"],
     ["LU", "Luxembourg"],
-    ["IN", "Inde"],
-    ["BR", "Brésil"],
-    ["ZA", "Afrique du sud"],
+    ["IN", "India"],
+    ["BR", "Brazil"],
+    ["ZA", "South Africa"],
     ["MA", "Morocco"],
-    ["PL", "Pologne"],
-    ["CH", "Suisse"],
-    ["DK", "Danemark"],
-    ["SE", "Suède"],
-    ["MX", "Mexique"],
+    ["PL", "Poland"],
+    ["CH", "Switzerland"],
+    ["DK", "Denmark"],
+    ["SE", "Sweden"],
+    ["MX", "Mexico"],
     ["AT", "Austria"],
-    ["GR", "Grèce"],
+    ["GR", "Greece"],
     ["IL", "Israel"],
-    ["TR", "Turquie"],
+    ["TR", "Turkey"],
     ["IR", "Iran"],
-    ["CO", "Colombie"],
-    ["PE", "Pérou"],
-    ["RO", "Roumanie"],
+    ["CO", "Colombia"],
+    ["PE", "Peru"],
+    ["RO", "Romania"],
     ["UA", "Ukraine"],
     ["CL", "Chili"]
 ]
@@ -46,7 +46,6 @@ countries_to_track = [
 if __name__ == "__main__":
     download_stats(countries_to_track, yesterday=True)
     path = download_stats(countries_to_track) + "/"
-    recap = generate_recap("FR", "AA_Daily_recap.json", path, countries_to_track, 'AA_DAILY_TOTAL.json')
-    print(recap)
-    #send_email("FR", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
-    #           'aurore.idee@gmail.com')
+    recap = generate_recap("AA_Daily_recap.json", path, countries_to_track, 'AA_DAILY_TOTAL.json')
+    send_email("fr", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
+               'aurore.idee@gmail.com')

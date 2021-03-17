@@ -7,6 +7,7 @@ Emile Villette - March 2021
 """
 import json
 import yagmail
+import translator
 
 
 def send_email(language, subject, content, sender, recipient):
@@ -19,9 +20,12 @@ def send_email(language, subject, content, sender, recipient):
     :param recipient: receiver email
     :return: None
     """
-    with open('languages/' + language + ".json", "r", encoding="utf-8") as language_file:
+    with open("languages/en.json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
     new_content = language_data["email_header"].format(recipient.split("@")[0]) + "\n" + content
+    translated_content = translator.trans(new_content,'en', language)
+    print(translated_content)
     with yagmail.SMTP(sender) as yag:
-        yag.send(recipient, subject, new_content)
+        pass
+        #yag.send(recipient, subject, translated_content)
     yag.close()

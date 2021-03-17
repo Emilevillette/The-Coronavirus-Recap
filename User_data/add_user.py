@@ -9,9 +9,6 @@ import json
 import os
 
 
-# from user_settings import modify_user
-
-
 def add_user_in_db(email, language, preferences):
     user_unique_id = uuid.uuid5(uuid.NAMESPACE_URL, email)
     path = "{}/{}.json".format("Users", user_unique_id)
@@ -25,6 +22,6 @@ def add_user_in_db(email, language, preferences):
 
             template["uuid"], template["email"], template["language"] = str(user_unique_id), email, language
             # USER PREFERENCES ENCODING TBI
-            user.write(str(template))
+            user.write(str(template).replace("'", '"'))
 
             return True

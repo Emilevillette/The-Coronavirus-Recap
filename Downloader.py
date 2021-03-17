@@ -14,7 +14,7 @@ import json
 
 
 def download_stats(countries_to_track, yesterday=False):
-    """
+    """Downloads COVID stats from https://www.disease.sh/
 
     :param yesterday: download yesterday's data
     :param countries_to_track: the list of the countries to track in the form [["COUNTRY ISO CODE", "Country name],...]
