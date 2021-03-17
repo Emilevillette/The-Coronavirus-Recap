@@ -19,7 +19,7 @@ def generate_recap(recap_file, path, country_list, total):
     :return: recap, a string of the daily recap.
     """
     # Set locale separator to the local preference
-    locale.setlocale(locale.LC_ALL, '')
+    locale.setlocale(locale.LC_ALL, "")
 
     # Open json file with list of chosen countries
     with open(path + recap_file, "r") as file:
@@ -36,31 +36,44 @@ def generate_recap(recap_file, path, country_list, total):
     recap = ""
 
     for country in range(len(data)):
-        with open(path + "/vaccine/" + country_list[country][0] + "_VACCINE.json", "r") as vaccine_file:
+        with open(
+            path + "/vaccine/" +
+                country_list[country][0] + "_VACCINE.json", "r"
+        ) as vaccine_file:
             vaccine_data = json.loads(vaccine_file.read())
 
         vaccine_delta = []
         for day in vaccine_data["timeline"].values():
             vaccine_delta.append(day)
-        recap += case_sentence.format(country_list[country][1], data[country]["todayDeaths"],
-                                      data[country]["todayCases"])
+        recap += case_sentence.format(
+            country_list[country][1],
+            data[country]["todayDeaths"],
+            data[country]["todayCases"],
+        )
         recap += critical_sentence.format(data[country]["critical"])
         if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
-            recap += " " * len(country_list[country][1]) + vaccine_sentence.format(vaccine_delta[1],
-                                                                                   int(vaccine_delta[1]) - int(
-                                                                                       vaccine_delta[0]))
+            recap += " " * len(country_list[country][1]) + vaccine_sentence.format(
+                vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
+            )
         else:
             recap += "\n"
 
-    with open(path + total, 'r') as total_file:
+    with open(path + total, "r") as total_file:
         total_cases = json.loads(total_file.read())
 
-    recap += language_data["global_cases"].format(total_cases["cases"],
-                                                  total_cases["todayCases"],
-                                                  total_cases["deaths"],
-                                                  total_cases["todayDeaths"]) + "\n"
+    recap += (
+        language_data["global_cases"].format(
+            total_cases["cases"],
+            total_cases["todayCases"],
+            total_cases["deaths"],
+            total_cases["todayDeaths"],
+        )
+        + "\n"
+    )
 
-    with open(path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r") as vaccine_total_file:
+    with open(
+        path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
+    ) as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
 
     total_vaccine_data = []
@@ -69,8 +82,13 @@ def generate_recap(recap_file, path, country_list, total):
         total_vaccine_data.append(global_vaccine)
 
     if int(total_vaccine_data[1]) - int(total_vaccine_data[0]) > 0:
-        recap += language_data["global_vaccine"].format(
-            total_vaccine_data[1], int(total_vaccine_data[1]) - int(total_vaccine_data[0])) + "\n"
+        recap += (
+            language_data["global_vaccine"].format(
+                total_vaccine_data[1],
+                int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
+            )
+            + "\n"
+        )
 
     recap += "\n" + language_data["vaccine_warning"]
 

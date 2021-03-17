@@ -7,10 +7,11 @@ N.B.: If run multiple times in a day, updates the existing ".coviddata" files.
 
 Emile Villette - March 2021
 """
+import json
+import os
+
 import directoryManager
 import downloadFile
-import os
-import json
 
 
 def download_stats(countries_to_track, yesterday=False):
@@ -33,7 +34,12 @@ def download_stats(countries_to_track, yesterday=False):
     recap_countries_to_request = ""
 
     # Download today's files from https://disease.sh/v3/covid-19/countries
-    downloadFile.download_file('https://disease.sh/v3/covid-19/countries' + url_yesterday, '.json', 'AA_RawData', path)
+    downloadFile.download_file(
+        "https://disease.sh/v3/covid-19/countries" + url_yesterday,
+        ".json",
+        "AA_RawData",
+        path,
+    )
 
     for country in range(len(countries_to_track)):
         # Get the ISO_code from the user's desired country list
@@ -45,19 +51,33 @@ def download_stats(countries_to_track, yesterday=False):
                 update_data = json.load(update_check)
 
             if update_data["todayCases"] == 0 and update_data["todayDeaths"] == 0:
-                downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday,
-                                           ".json",
-                                           iso_code, path)
+                downloadFile.download_file(
+                    "https://disease.sh/v3/covid-19/countries/"
+                    + iso_code
+                    + url_yesterday,
+                    ".json",
+                    iso_code,
+                    path,
+                )
 
         else:
             # Download the "country"'s daily data
-            downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + iso_code + url_yesterday, ".json",
-                                       iso_code, path)
+            downloadFile.download_file(
+                "https://disease.sh/v3/covid-19/countries/" + iso_code + url_yesterday,
+                ".json",
+                iso_code,
+                path,
+            )
 
         # Download the "country"'s vaccine data in the last two days.
         downloadFile.download_file(
-            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/" + iso_code + "?lastdays=2",
-            ".json", iso_code + "_VACCINE", path + "/vaccine")
+            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/"
+            + iso_code
+            + "?lastdays=2",
+            ".json",
+            iso_code + "_VACCINE",
+            path + "/vaccine",
+        )
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
@@ -66,18 +86,37 @@ def download_stats(countries_to_track, yesterday=False):
     recap_countries_to_request.rstrip(",")
 
     # Download the user's selected countries data in one singles file for archiving.
-    downloadFile.download_file('https://disease.sh/v3/covid-19/countries/' + recap_countries_to_request + url_yesterday,
-                               ".json", "AA_DAILY_Recap", path)
+    downloadFile.download_file(
+        "https://disease.sh/v3/covid-19/countries/"
+        + recap_countries_to_request
+        + url_yesterday,
+        ".json",
+        "AA_DAILY_Recap",
+        path,
+    )
 
     # Daily GLOBAL (the whole world without per-country details)
-    downloadFile.download_file('https://disease.sh/v3/covid-19/all' + url_yesterday, ".json", "AA_DAILY_TOTAL", path)
+    downloadFile.download_file(
+        "https://disease.sh/v3/covid-19/all" + url_yesterday,
+        ".json",
+        "AA_DAILY_TOTAL",
+        path,
+    )
 
     # Download per country GLOBAL vaccine stats in the two last days
-    downloadFile.download_file('https://disease.sh/v3/covid-19/vaccine/coverage/countries/?lastdays=2', ".json",
-                               "AA_DAILY_TOTAL_VACCINE", path + "/vaccine")
+    downloadFile.download_file(
+        "https://disease.sh/v3/covid-19/vaccine/coverage/countries/?lastdays=2",
+        ".json",
+        "AA_DAILY_TOTAL_VACCINE",
+        path + "/vaccine",
+    )
 
     # Download GLOBAL Vaccine data (the whole world without per-country details)
-    downloadFile.download_file('https://disease.sh/v3/covid-19/vaccine/coverage?lastdays=2', ".json",
-                               "AA_DAILY_TOTAL_GLOBAL_VACCINE", path + "/vaccine")
+    downloadFile.download_file(
+        "https://disease.sh/v3/covid-19/vaccine/coverage?lastdays=2",
+        ".json",
+        "AA_DAILY_TOTAL_GLOBAL_VACCINE",
+        path + "/vaccine",
+    )
 
     return path
