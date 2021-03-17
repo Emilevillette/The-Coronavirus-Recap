@@ -4,11 +4,12 @@
 Emile Villette - October 2020
 Automatic daily email updates on the COVID-19 situation in Belgium
 """
-from translator import trans
-from Downloader import download_stats
-from recap_generator import generate_recap
-from emailSender import send_email
 from datetime import date
+
+from Downloader import download_stats
+from emailSender import send_email
+from recap_generator import generate_recap
+from translator import trans
 
 countries_to_track = [
     ["IT", "Italy"],
@@ -40,12 +41,19 @@ countries_to_track = [
     ["PE", "Peru"],
     ["RO", "Romania"],
     ["UA", "Ukraine"],
-    ["CL", "Chili"]
+    ["CL", "Chili"],
 ]
 
 if __name__ == "__main__":
     download_stats(countries_to_track, yesterday=True)
     path = download_stats(countries_to_track) + "/"
-    recap = generate_recap("AA_Daily_recap.json", path, countries_to_track, 'AA_DAILY_TOTAL.json')
-    send_email("fr", "Recap Coronavirus " + str(date.today()), recap, 'coronarecap@gmail.com',
-               'aurore.idee@gmail.com')
+    recap = generate_recap(
+        "AA_Daily_recap.json", path, countries_to_track, "AA_DAILY_TOTAL.json"
+    )
+    send_email(
+        "fr",
+        "Recap Coronavirus " + str(date.today()),
+        recap,
+        "coronarecap@gmail.com",
+        "aurore.idee@gmail.com",
+    )
