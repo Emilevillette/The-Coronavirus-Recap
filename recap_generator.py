@@ -37,8 +37,7 @@ def generate_recap(recap_file, path, country_list, total):
 
     for country in range(len(data)):
         with open(
-            path + "vaccine/" +
-                country_list[country][0] + "_VACCINE.json", "r"
+            path + "vaccine/" + country_list[country][0] + "_VACCINE.json", "r"
         ) as vaccine_file:
             vaccine_data = json.loads(vaccine_file.read())
 

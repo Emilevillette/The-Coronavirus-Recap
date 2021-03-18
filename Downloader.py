@@ -34,7 +34,7 @@ def download_stats(countries_to_track, yesterday=False):
         with open(path + "/vaccine/AA_properties.json", "r") as properties_check:
             vaccine_properties = json.load(properties_check)
             if vaccine_properties["downloaded"]:
-                print('yas')
+                print("yas")
                 vaccine_is_downloaded = True
     else:
         vaccine_is_downloaded = False
@@ -84,7 +84,9 @@ def download_stats(countries_to_track, yesterday=False):
         # Download the "country"'s vaccine data in the last two days.
         if not vaccine_is_downloaded:
             downloadFile.download_file(
-                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(iso_code),
+                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(
+                    iso_code
+                ),
                 ".json",
                 iso_code + "_VACCINE",
                 path + "/vaccine",
@@ -111,7 +113,7 @@ def download_stats(countries_to_track, yesterday=False):
         "https://disease.sh/v3/covid-19/all" + url_yesterday,
         ".json",
         "AA_DAILY_TOTAL",
-        path
+        path,
     )
 
     # Download per country GLOBAL vaccine stats in the two last days
