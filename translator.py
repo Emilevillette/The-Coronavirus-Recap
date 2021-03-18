@@ -3,7 +3,8 @@ Translate a text using Google Translate
 
 Emile Villette - March 2021
 """
-#IMPORTANT, AS OF 16/03/2021
+# IMPORTANT, AS OF 16/03/2021 you have to use VERSION 3.1.0a or the api won't be functional. Install it with
+# pip install googletrans==3.1.0a
 import googletrans
 
 

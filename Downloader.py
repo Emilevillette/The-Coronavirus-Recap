@@ -30,6 +30,15 @@ def download_stats(countries_to_track, yesterday=False):
         # Get daily file path
         path = directoryManager.daily_directory()
 
+    if os.path.exists(path + "/vaccine/AA_properties.json"):
+        with open(path + "/vaccine/AA_properties.json", "r") as properties_check:
+            vaccine_properties = json.load(properties_check)
+            if vaccine_properties["downloaded"]:
+                print('yas')
+                vaccine_is_downloaded = True
+    else:
+        vaccine_is_downloaded = False
+
     # Recap file
     recap_countries_to_request = ""
 
@@ -41,9 +50,12 @@ def download_stats(countries_to_track, yesterday=False):
         path,
     )
 
-    for country in range(len(countries_to_track)):
+    with open("languages/countries.json", "r") as country_file:
+        country_list = json.load(country_file)
+
+    for country in country_list["iso_codes"]:
         # Get the ISO_code from the user's desired country list
-        iso_code = countries_to_track[country][0]
+        iso_code = country
 
         if os.path.exists(path + "/" + iso_code + ".json"):
 
@@ -70,14 +82,13 @@ def download_stats(countries_to_track, yesterday=False):
             )
 
         # Download the "country"'s vaccine data in the last two days.
-        downloadFile.download_file(
-            "https://disease.sh/v3/covid-19/vaccine/coverage/countries/"
-            + iso_code
-            + "?lastdays=2",
-            ".json",
-            iso_code + "_VACCINE",
-            path + "/vaccine",
-        )
+        if not vaccine_is_downloaded:
+            downloadFile.download_file(
+                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(iso_code),
+                ".json",
+                iso_code + "_VACCINE",
+                path + "/vaccine",
+            )
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
@@ -100,7 +111,7 @@ def download_stats(countries_to_track, yesterday=False):
         "https://disease.sh/v3/covid-19/all" + url_yesterday,
         ".json",
         "AA_DAILY_TOTAL",
-        path,
+        path
     )
 
     # Download per country GLOBAL vaccine stats in the two last days
@@ -118,5 +129,9 @@ def download_stats(countries_to_track, yesterday=False):
         "AA_DAILY_TOTAL_GLOBAL_VACCINE",
         path + "/vaccine",
     )
+
+    if not vaccine_is_downloaded:
+        with open(path + "/vaccine/AA_properties.json", "w") as vaccine_downloaded:
+            vaccine_downloaded.write('{"downloaded": 1}')
 
     return path
