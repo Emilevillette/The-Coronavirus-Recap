@@ -91,7 +91,9 @@ def download_stats(yesterday=False):
         # Download the "country"'s vaccine data in the last two days.
         if not vaccine_is_downloaded:
             downloadFile.download_file(
-                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(iso_code),
+                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(
+                    iso_code
+                ),
                 ".json",
                 iso_code + "_VACCINE",
                 path + "/vaccine",
@@ -118,7 +120,7 @@ def download_stats(yesterday=False):
         "https://disease.sh/v3/covid-19/all" + url_yesterday,
         ".json",
         "AA_DAILY_TOTAL",
-        path
+        path,
     )
 
     # Download per country GLOBAL vaccine stats in the two last days

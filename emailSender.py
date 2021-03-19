@@ -26,8 +26,8 @@ def send_email(language, subject, content, sender, recipient):
         language_data = json.load(language_file)
 
     new_content = (
-            language_data["email_header"].format(
-                recipient.split("@")[0]) + "\n" + content
+        language_data["email_header"].format(
+            recipient.split("@")[0]) + "\n" + content
     )
 
     translated_content = translator.trans(new_content, "en", language)
