@@ -14,11 +14,10 @@ import directoryManager
 import downloadFile
 
 
-def download_stats(countries_to_track, yesterday=False):
+def download_stats(yesterday=False):
     """Downloads COVID stats from https://www.disease.sh/
 
     :param yesterday: download yesterday's data
-    :param countries_to_track: the list of the countries to track in the form [["COUNTRY ISO CODE", "Country name],...]
     :return: None
     """
 
@@ -34,7 +33,6 @@ def download_stats(countries_to_track, yesterday=False):
         with open(path + "/vaccine/AA_properties.json", "r") as properties_check:
             vaccine_properties = json.load(properties_check)
             if vaccine_properties["downloaded"]:
-                print('yas')
                 vaccine_is_downloaded = True
     else:
         vaccine_is_downloaded = False
@@ -49,6 +47,15 @@ def download_stats(countries_to_track, yesterday=False):
         "AA_RawData",
         path,
     )
+
+    with open(path + "/AA_RawData.json", "r") as AA_process:
+        AA_data = json.load(AA_process)
+
+    AA = {}
+    for i in AA_data:
+        AA[i["countryInfo"]["iso2"]] = i
+    with open(path + "/AA_RawDataProcessed.json", "w") as AA_processed:
+        json.dump(AA, AA_processed)
 
     with open("languages/countries.json", "r") as country_file:
         country_list = json.load(country_file)

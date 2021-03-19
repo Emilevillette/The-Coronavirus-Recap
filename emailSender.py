@@ -35,5 +35,5 @@ def send_email(language, subject, content, sender, recipient):
 
     with yagmail.SMTP(sender) as yag:
         pass
-        #yag.send(recipient, subject, translated_content)
+        yag.send(recipient, subject, translated_content)
     yag.close()
