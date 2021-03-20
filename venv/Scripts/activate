@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\emile\OneDrive\2020-2021\Projet-covid\venv"
+VIRTUAL_ENV="C:\Users\emile\OneDrive\2020-2021\Ronron\Projet_covid\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

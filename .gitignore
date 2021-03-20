@@ -1,6 +1,5 @@
 data/
 __pychache__/
-venv/
 .idea/
 .idea/vcs.xml
 *.coviddata
