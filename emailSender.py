@@ -12,7 +12,7 @@ import yagmail
 import translator
 
 
-def send_email(language, subject, content, sender, recipient):
+def send_email(language, subject, content, sender, recipient, test_mode=False):
     """Send an email.
 
     :param language: user's preferred language (ISO code, string)
@@ -34,6 +34,8 @@ def send_email(language, subject, content, sender, recipient):
     print(translated_content)
 
     with yagmail.SMTP(sender) as yag:
-        pass
-        yag.send(recipient, subject, translated_content)
+        if test_mode:
+            pass
+        else:
+            yag.send(recipient, subject, translated_content)
     yag.close()

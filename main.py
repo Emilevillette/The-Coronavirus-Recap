@@ -28,4 +28,5 @@ if __name__ == "__main__":
             recap,
             "coronarecap@gmail.com",
             data["email"],
+            test_mode=True
         )
