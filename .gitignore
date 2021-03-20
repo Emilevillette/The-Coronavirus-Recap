@@ -3,7 +3,6 @@ __pychache__/
 venv/
 .idea/
 .idea/vcs.xml
-.idea/vcs.xml
 *.coviddata
 __pycache__/Downloader.cpython-39.pyc
 *.pyc
