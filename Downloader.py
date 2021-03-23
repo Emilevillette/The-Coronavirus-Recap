@@ -10,6 +10,7 @@ Emile Villette - March 2021
 import json
 import os
 import time
+
 import directoryManager
 import downloadFile
 
@@ -74,13 +75,11 @@ def download_stats(yesterday=False):
         if os.path.exists(path + "/" + iso_code + ".json"):
 
             check = downloadFile.download_file(
-                "https://disease.sh/v3/covid-19/countries/"
-                + iso_code
-                + url_yesterday,
+                "https://disease.sh/v3/covid-19/countries/" + iso_code + url_yesterday,
                 ".json",
                 iso_code,
                 path,
-                case_file=True
+                case_file=True,
             )
             print("Downloaded {} data".format(iso_code))
             if check:
@@ -94,7 +93,7 @@ def download_stats(yesterday=False):
                 ".json",
                 iso_code,
                 path,
-                case_file=True
+                case_file=True,
             )
             print("Downloaded {} data".format(iso_code))
             if check:
@@ -115,7 +114,9 @@ def download_stats(yesterday=False):
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
 
-    with open("{}/AA_to_download.json".format(path), "w") as updated_no_numbers_countries:
+    with open(
+        "{}/AA_to_download.json".format(path), "w"
+    ) as updated_no_numbers_countries:
         json.dump(no_numbers_countries, updated_no_numbers_countries)
 
     # Remove the most right comma from the recap_countries_to_request
@@ -159,5 +160,8 @@ def download_stats(yesterday=False):
         with open(path + "/vaccine/AA_properties.json", "w") as vaccine_downloaded:
             vaccine_downloaded.write('{"downloaded": 1}')
 
-    print("------- Process took %s seconds to execute -------" % (time.time() - start_time))
+    print(
+        "------- Process took %s seconds to execute -------"
+        % (time.time() - start_time)
+    )
     return path
