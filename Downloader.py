@@ -9,7 +9,7 @@ Emile Villette - March 2021
 """
 import json
 import os
-
+import time
 import directoryManager
 import downloadFile
 
@@ -20,7 +20,7 @@ def download_stats(yesterday=False):
     :param yesterday: download yesterday's data
     :return: None
     """
-
+    start_time = time.time()
     if yesterday:
         url_yesterday = "?yesterday=true"
         path = directoryManager.daily_directory(yesterday=True)
@@ -49,16 +49,23 @@ def download_stats(yesterday=False):
     )
 
     with open(path + "/AA_RawData.json", "r") as AA_process:
-        AA_data = json.load(AA_process)
+        unprocessed_data = json.load(AA_process)
 
-    AA = {}
-    for i in AA_data:
-        AA[i["countryInfo"]["iso2"]] = i
+    processed_json = {}
+    for i in unprocessed_data:
+        processed_json[i["countryInfo"]["iso2"]] = i
     with open(path + "/AA_RawDataProcessed.json", "w") as AA_processed:
-        json.dump(AA, AA_processed)
+        json.dump(processed_json, AA_processed)
 
     with open("languages/countries.json", "r") as country_file:
         country_list = json.load(country_file)
+
+    if os.path.exists("{}/AA_to_download.json".format(path)):
+        with open("{}/AA_to_download.json".format(path), "r") as checker:
+            country_list["iso_codes"] = json.load(checker)
+
+    # countries that have not given their daily numbers (yet)
+    no_numbers_countries = []
 
     for country in country_list["iso_codes"]:
         # Get the ISO_code from the user's desired country list
@@ -66,29 +73,33 @@ def download_stats(yesterday=False):
 
         if os.path.exists(path + "/" + iso_code + ".json"):
 
-            with open(path + "/" + iso_code + ".json") as update_check:
-                update_data = json.load(update_check)
-
-            if update_data["todayCases"] == 0 and update_data["todayDeaths"] == 0:
-                downloadFile.download_file(
-                    "https://disease.sh/v3/covid-19/countries/"
-                    + iso_code
-                    + url_yesterday,
-                    ".json",
-                    iso_code,
-                    path,
-                )
-                print("Downloaded {} data".format(iso_code))
+            check = downloadFile.download_file(
+                "https://disease.sh/v3/covid-19/countries/"
+                + iso_code
+                + url_yesterday,
+                ".json",
+                iso_code,
+                path,
+                case_file=True
+            )
+            print("Downloaded {} data".format(iso_code))
+            if check:
+                no_numbers_countries.append(iso_code)
+                print("No data for country {}".format(iso_code))
 
         else:
             # Download the "country"'s daily data
-            downloadFile.download_file(
+            check = downloadFile.download_file(
                 "https://disease.sh/v3/covid-19/countries/" + iso_code + url_yesterday,
                 ".json",
                 iso_code,
                 path,
+                case_file=True
             )
             print("Downloaded {} data".format(iso_code))
+            if check:
+                no_numbers_countries.append(iso_code)
+                print("No data for country {}".format(iso_code))
 
         # Download the "country"'s vaccine data in the last two days.
         if not vaccine_is_downloaded:
@@ -103,6 +114,9 @@ def download_stats(yesterday=False):
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
+
+    with open("{}/AA_to_download.json".format(path), "w") as updated_no_numbers_countries:
+        json.dump(no_numbers_countries, updated_no_numbers_countries)
 
     # Remove the most right comma from the recap_countries_to_request
     recap_countries_to_request.rstrip(",")
@@ -145,4 +159,5 @@ def download_stats(yesterday=False):
         with open(path + "/vaccine/AA_properties.json", "w") as vaccine_downloaded:
             vaccine_downloaded.write('{"downloaded": 1}')
 
+    print("------- Process took %s seconds to execute -------" % (time.time() - start_time))
     return path
