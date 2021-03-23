@@ -58,7 +58,9 @@ def generate_recap(recap_file, path, user_data, total):
         recap += critical_sentence.format(
             data[user_cases[country]]["critical"])
         if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
-            recap += " " * len(user_data[country][1]) + vaccine_sentence.format(
+            print("Vaccine delta for country {}".format(user_cases[country]))
+
+            recap += vaccine_sentence.format(
                 vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
             )
         else:

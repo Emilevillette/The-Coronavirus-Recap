@@ -78,6 +78,7 @@ def download_stats(yesterday=False):
                     iso_code,
                     path,
                 )
+                print("Downloaded {} data".format(iso_code))
 
         else:
             # Download the "country"'s daily data
@@ -87,11 +88,12 @@ def download_stats(yesterday=False):
                 iso_code,
                 path,
             )
+            print("Downloaded {} data".format(iso_code))
 
         # Download the "country"'s vaccine data in the last two days.
         if not vaccine_is_downloaded:
             downloadFile.download_file(
-                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=2".format(
+                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=5".format(
                     iso_code
                 ),
                 ".json",
