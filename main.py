@@ -7,6 +7,7 @@ Automatic daily email updates on the COVID-19 situation in Belgium
 import json
 import os
 from datetime import date
+import time
 
 from Downloader import download_stats
 from emailSender import send_email
@@ -28,5 +29,6 @@ if __name__ == "__main__":
             recap,
             "coronarecap@gmail.com",
             data["email"],
-            test_mode=True,
+            test_mode=True
         )
+        time.sleep(0.5)
