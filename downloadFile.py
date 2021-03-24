@@ -10,7 +10,7 @@ from time import sleep
 
 
 def download_file(url, file_extension, category, path, case_file=False, failed=0):
-    """downloads a file from the internet and stores it in the specified directory.
+    """Downloads a file from the internet and stores it in the specified directory.
 
     :param failed: Number of time the connection has failed, only called by function itself
     :param case_file: defines whether the file to download is a covid general case file
@@ -26,7 +26,6 @@ def download_file(url, file_extension, category, path, case_file=False, failed=0
         if case_file:
             request_json = r.json()
             if request_json["todayCases"] == 0 and request_json["todayDeaths"] == 0:
-                del request_json
                 return True
 
         # Store acquired content in file in the desired path
@@ -34,11 +33,10 @@ def download_file(url, file_extension, category, path, case_file=False, failed=0
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk:
                     f.write(chunk)
-    except ConnectionError and ConnectionAbortedError as e:
+    except ConnectionError or ConnectionAbortedError as e:
         if failed > 10:
             raise ConnectionError("Connection failed, please ensure you have a valid internet connection.")
-        else:
-            new_failed = failed + 1
-            print("Connection failed: retrying, {} tries left before throwing an Error".format(str(10 - failed)))
-            sleep(0.5)
-            download_file(url, file_extension, category, path, case_file=False, failed=new_failed)
+        new_failed = failed + 1
+        print("Connection failed: retrying, {} tries left before throwing an Error".format(str(10 - failed)))
+        sleep(0.5)
+        download_file(url, file_extension, category, path, case_file=False, failed=new_failed)
