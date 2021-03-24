@@ -9,7 +9,7 @@ import os
 import uuid
 
 
-def add_user_in_db(email, language, preferences):
+def add_user_in_db(email, language, preferences_countries):
     user_unique_id = uuid.uuid5(uuid.NAMESPACE_URL, email)
     path = "{}/{}.json".format("Users", user_unique_id)
 
@@ -26,6 +26,8 @@ def add_user_in_db(email, language, preferences):
                 language,
             )
             # USER PREFERENCES ENCODING TBI
+            template["preferences"]["countries"] = preferences_countries
+
             user.write(str(template).replace("'", '"'))
 
             return True

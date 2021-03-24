@@ -3,7 +3,7 @@
 """
 Downloads the daily covid stats from Worldometer.
 
-N.B.: If run multiple times in a day, updates the existing ".coviddata" files.
+N.B.: If run multiple times in a day, updates the existing json files.
 
 Emile Villette - March 2021
 """
