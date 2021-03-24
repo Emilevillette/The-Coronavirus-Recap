@@ -5,8 +5,9 @@ Emile Villette - October 2020
 
 download a file from the internet and store it in a directory specified by the user
 """
-import requests
 from time import sleep
+
+import requests
 
 
 def download_file(url, file_extension, category, path, case_file=False, failed=0):
@@ -36,9 +37,17 @@ def download_file(url, file_extension, category, path, case_file=False, failed=0
                     f.write(chunk)
     except ConnectionError and ConnectionAbortedError as e:
         if failed > 10:
-            raise ConnectionError("Connection failed, please ensure you have a valid internet connection.")
+            raise ConnectionError(
+                "Connection failed, please ensure you have a valid internet connection."
+            )
         else:
             new_failed = failed + 1
-            print("Connection failed: retrying, {} tries left before throwing an Error".format(str(10 - failed)))
+            print(
+                "Connection failed: retrying, {} tries left before throwing an Error".format(
+                    str(10 - failed)
+                )
+            )
             sleep(0.5)
-            download_file(url, file_extension, category, path, case_file=False, failed=new_failed)
+            download_file(
+                url, file_extension, category, path, case_file=False, failed=new_failed
+            )
