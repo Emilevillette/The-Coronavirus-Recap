@@ -15,19 +15,18 @@ def add_user_in_db(email, language, preferences_countries):
 
     if os.path.isfile(path):
         return "E-mail already registered, please log in to modify preferences"
-    else:
-        with open(path, "w") as user:
-            with open("exampleuserfile/userdata.json", "r") as template_file:
-                template = json.load(template_file)
+    with open(path, "w") as user:
+        with open("exampleuserfile/userdata.json", "r") as template_file:
+            template = json.load(template_file)
 
-            template["uuid"], template["email"], template["language"] = (
-                str(user_unique_id),
-                email,
-                language,
-            )
-            # USER PREFERENCES ENCODING TBI
-            template["preferences"]["countries"] = preferences_countries
+        template["uuid"], template["email"], template["language"] = (
+            str(user_unique_id),
+            email,
+            language,
+        )
+        # USER PREFERENCES ENCODING TBI
+        template["preferences"]["countries"] = preferences_countries
 
-            user.write(str(template).replace("'", '"'))
+        user.write(str(template).replace("'", '"'))
 
-            return True
+        return True

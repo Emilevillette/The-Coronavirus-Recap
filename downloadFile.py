@@ -33,7 +33,7 @@ def download_file(url, file_extension, category, path, case_file=False, failed=0
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk:
                     f.write(chunk)
-    except ConnectionError or ConnectionAbortedError as e:
+    except (ConnectionError, ConnectionAbortedError):
         if failed > 10:
             raise ConnectionError("Connection failed, please ensure you have a valid internet connection.")
         new_failed = failed + 1
