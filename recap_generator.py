@@ -42,7 +42,7 @@ def generate_recap(recap_file, path, user_data, total):
 
     for country in range(len(user_cases)):
         with open(
-            path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
+                path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
         ) as vaccine_file:
             vaccine_data = json.loads(vaccine_file.read())
 
@@ -58,7 +58,6 @@ def generate_recap(recap_file, path, user_data, total):
         recap += critical_sentence.format(
             data[user_cases[country]]["critical"])
         if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
-            print("Vaccine delta for country {}".format(user_cases[country]))
 
             recap += vaccine_sentence.format(
                 vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
@@ -70,17 +69,17 @@ def generate_recap(recap_file, path, user_data, total):
         total_cases = json.loads(total_file.read())
 
     recap += (
-        language_data["global_cases"].format(
-            total_cases["cases"],
-            total_cases["todayCases"],
-            total_cases["deaths"],
-            total_cases["todayDeaths"],
-        )
-        + "\n"
+            language_data["global_cases"].format(
+                total_cases["cases"],
+                total_cases["todayCases"],
+                total_cases["deaths"],
+                total_cases["todayDeaths"],
+            )
+            + "\n"
     )
 
     with open(
-        path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
+            path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
     ) as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
 
@@ -91,13 +90,11 @@ def generate_recap(recap_file, path, user_data, total):
 
     if int(total_vaccine_data[1]) - int(total_vaccine_data[0]) > 0:
         recap += (
-            language_data["global_vaccine"].format(
-                total_vaccine_data[1],
-                int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
-            )
-            + "\n"
+                language_data["global_vaccine"].format(
+                    total_vaccine_data[1],
+                    int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
+                )
+                + "\n"
         )
-
-    recap += "\n" + language_data["vaccine_warning"]
 
     return recap

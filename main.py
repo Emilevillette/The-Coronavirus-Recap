@@ -23,12 +23,15 @@ if __name__ == "__main__":
         recap = generate_recap(
             "AA_RawDataProcessed.json", path, data["preferences"], "AA_DAILY_TOTAL.json"
         )
-        send_email(
+        check_for_abortion = send_email(
             data["language"],
             "Recap Coronavirus " + str(date.today()),
             recap,
             "coronarecap@gmail.com",
             data["email"],
+            path,
             test_mode=True,
         )
+        if check_for_abortion == "Aborted":
+            break
         time.sleep(0.5)
