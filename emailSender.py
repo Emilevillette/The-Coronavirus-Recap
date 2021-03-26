@@ -47,7 +47,7 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
         else:
             if mail_data["mails_sent"]:
                 print(
-                    "/!\ WARNING /!\ : E-mails have already been sent today but test mode is disabled, please confirm "
+                    "WARNING : E-mails have already been sent today but test mode is disabled, please confirm "
                     "before proceeding.")
                 confirmation = input("Write 'yes' to proceed (type anything else to cancel) ? > ")
                 if confirmation == "Yes":
