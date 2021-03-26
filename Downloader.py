@@ -9,13 +9,13 @@ Emile Villette - March 2021
 """
 import json
 import os
-import time
 import sys
+import time
+
+import progressbar
 
 import directoryManager
 import downloadFile
-
-import progressbar
 
 
 def download_stats(yesterday=False):
@@ -71,13 +71,26 @@ def download_stats(yesterday=False):
     # countries that have not given their daily numbers (yet)
     no_numbers_countries = []
 
-    progress_widgets = [progressbar.FormatLabel(""), progressbar.Percentage(), " ", progressbar.Bar(marker="█", left="[", right="]", fill="░")," ", progressbar.AdaptiveETA(), progressbar.FormatLabel("") ]
-    for i in progressbar.progressbar(range(len(country_list["iso_codes"])), redirect_stdout=True,
-                                     widgets=progress_widgets):
+    progress_widgets = [
+        progressbar.FormatLabel(""),
+        progressbar.Percentage(),
+        " ",
+        progressbar.Bar(marker="█", left="[", right="]", fill="░"),
+        " ",
+        progressbar.AdaptiveETA(),
+        progressbar.FormatLabel(""),
+    ]
+    for i in progressbar.progressbar(
+        range(len(country_list["iso_codes"])),
+        redirect_stdout=True,
+        widgets=progress_widgets,
+    ):
         # Get the ISO_code from the user's desired country list
         iso_code = country_list["iso_codes"][i]
 
-        progress_widgets[0] = progressbar.FormatLabel('Processing country {}: '.format(iso_code))
+        progress_widgets[0] = progressbar.FormatLabel(
+            "Processing country {}: ".format(iso_code)
+        )
 
         if os.path.exists(path + "/" + iso_code + ".json"):
 
@@ -90,9 +103,13 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         else:
             # Download the "country"'s daily data
@@ -105,9 +122,13 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         # Download the "country"'s vaccine data in the last two days.
         if not vaccine_is_downloaded:
@@ -123,10 +144,8 @@ def download_stats(yesterday=False):
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
 
-
-
     with open(
-            "{}/AA_to_download.json".format(path), "w"
+        "{}/AA_to_download.json".format(path), "w"
     ) as updated_no_numbers_countries:
         json.dump(no_numbers_countries, updated_no_numbers_countries)
 
