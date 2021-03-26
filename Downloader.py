@@ -114,12 +114,10 @@ def download_stats(yesterday=False):
                 progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
 
         # Download the "country"'s vaccine data in the last five days.
-        if not iso_code in vaccine_properties:
-            days_ago = 5
+        if iso_code not in vaccine_properties:
             for tries in range(4):
                 try_vaccine_data = downloadFile.download_file(
-                    "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays={}".format(iso_code,
-                                                                                                      days_ago),
+                    f"https://disease.sh/v3/covid-19/vaccine/coverage/countries/{iso_code}?lastdays={5+tries}",
                     ".json",
                     iso_code + "_VACCINE",
                     path + "/vaccine",
@@ -128,8 +126,6 @@ def download_stats(yesterday=False):
                 if not try_vaccine_data:
                     vaccine_data_confirmed.append(iso_code)
                     break
-                else:
-                    days_ago += 1
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
