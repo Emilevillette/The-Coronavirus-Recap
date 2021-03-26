@@ -9,13 +9,13 @@ Emile Villette - March 2021
 """
 import json
 import os
-import time
 import sys
+import time
+
+import progressbar
 
 import directoryManager
 import downloadFile
-
-import progressbar
 
 
 def download_stats(yesterday=False):
@@ -25,6 +25,7 @@ def download_stats(yesterday=False):
     :return: None
     """
     start_time = time.time()
+
     if yesterday:
         url_yesterday = "?yesterday=true"
         path = directoryManager.daily_directory(yesterday=True)
@@ -33,13 +34,12 @@ def download_stats(yesterday=False):
         # Get daily file path
         path = directoryManager.daily_directory()
 
+    vaccine_data_confirmed = []
     if os.path.exists(path + "/vaccine/AA_properties.json"):
         with open(path + "/vaccine/AA_properties.json", "r") as properties_check:
             vaccine_properties = json.load(properties_check)
-            if vaccine_properties["downloaded"]:
-                vaccine_is_downloaded = True
     else:
-        vaccine_is_downloaded = False
+        vaccine_properties = []
 
     # Recap file
     recap_countries_to_request = ""
@@ -72,16 +72,27 @@ def download_stats(yesterday=False):
     no_numbers_countries = []
 
     # Progress bar to monitor clearly download state
-    progress_widgets = [progressbar.FormatLabel(""), progressbar.Percentage(), " ",
-                        progressbar.Bar(marker="█", left="[", right="]", fill="░"), " ", progressbar.AdaptiveETA(),
-                        progressbar.FormatLabel("")]
+    progress_widgets = [
+        progressbar.FormatLabel(""),
+        progressbar.Percentage(),
+        " ",
+        progressbar.Bar(marker="█", left="[", right="]", fill="░"),
+        " ",
+        progressbar.AdaptiveETA(),
+        progressbar.FormatLabel(""),
+    ]
 
-    for i in progressbar.progressbar(range(len(country_list["iso_codes"])), redirect_stdout=True,
-                                     widgets=progress_widgets):
+    for i in progressbar.progressbar(
+        range(len(country_list["iso_codes"])),
+        redirect_stdout=True,
+        widgets=progress_widgets,
+    ):
         # Get the ISO_code from the user's desired country list
         iso_code = country_list["iso_codes"][i]
 
-        progress_widgets[0] = progressbar.FormatLabel('Processing country {}: '.format(iso_code))
+        progress_widgets[0] = progressbar.FormatLabel(
+            "Processing country {}: ".format(iso_code)
+        )
 
         if os.path.exists(path + "/" + iso_code + ".json"):
 
@@ -94,9 +105,13 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         else:
             # Download the "country"'s daily data
@@ -109,26 +124,36 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         # Download the "country"'s vaccine data in the last five days.
-        if not vaccine_is_downloaded:
-            downloadFile.download_file(
-                "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=5".format(
-                    iso_code
-                ),
-                ".json",
-                iso_code + "_VACCINE",
-                path + "/vaccine",
-            )
+        if iso_code not in vaccine_properties:
+            for tries in range(4):
+                try_vaccine_data = downloadFile.download_file(
+                    f"https://disease.sh/v3/covid-19/vaccine/coverage/countries/{iso_code}?lastdays={5+tries}",
+                    ".json",
+                    iso_code + "_VACCINE",
+                    path + "/vaccine",
+                    vaccine_file=True,
+                )
+                if not try_vaccine_data:
+                    vaccine_data_confirmed.append(iso_code)
+                    break
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
 
+    with open(path + "/vaccine/AA_properties.json", "w") as vaccine_check:
+        json.dump(vaccine_data_confirmed, vaccine_check)
+
     with open(
-            "{}/AA_to_download.json".format(path), "w"
+        "{}/AA_to_download.json".format(path), "w"
     ) as updated_no_numbers_countries:
         json.dump(no_numbers_countries, updated_no_numbers_countries)
 
@@ -168,10 +193,6 @@ def download_stats(yesterday=False):
         "AA_DAILY_TOTAL_GLOBAL_VACCINE",
         path + "/vaccine",
     )
-
-    if not vaccine_is_downloaded:
-        with open(path + "/vaccine/AA_properties.json", "w") as vaccine_downloaded:
-            vaccine_downloaded.write('{"downloaded": 1}')
 
     print(
         "------- Process took %s seconds to execute -------"
