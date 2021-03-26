@@ -16,6 +16,8 @@ import translator
 def send_email(language, subject, content, sender, recipient, path, test_mode=False):
     """Send an email.
 
+    :param path: path where the data is stored
+    :param test_mode: if set to True, doesn't send emails
     :param language: user's preferred language (ISO code, string)
     :param subject: Email subject
     :param content: Email content

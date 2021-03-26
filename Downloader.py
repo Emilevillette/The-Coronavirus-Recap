@@ -71,7 +71,11 @@ def download_stats(yesterday=False):
     # countries that have not given their daily numbers (yet)
     no_numbers_countries = []
 
-    progress_widgets = [progressbar.FormatLabel(""), progressbar.Percentage(), " ", progressbar.Bar(marker="█", left="[", right="]", fill="░")," ", progressbar.AdaptiveETA(), progressbar.FormatLabel("") ]
+    # Progress bar to monitor clearly download state
+    progress_widgets = [progressbar.FormatLabel(""), progressbar.Percentage(), " ",
+                        progressbar.Bar(marker="█", left="[", right="]", fill="░"), " ", progressbar.AdaptiveETA(),
+                        progressbar.FormatLabel("")]
+
     for i in progressbar.progressbar(range(len(country_list["iso_codes"])), redirect_stdout=True,
                                      widgets=progress_widgets):
         # Get the ISO_code from the user's desired country list
@@ -109,7 +113,7 @@ def download_stats(yesterday=False):
             else:
                 progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
 
-        # Download the "country"'s vaccine data in the last two days.
+        # Download the "country"'s vaccine data in the last five days.
         if not vaccine_is_downloaded:
             downloadFile.download_file(
                 "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays=5".format(
@@ -122,8 +126,6 @@ def download_stats(yesterday=False):
 
         # AA_DAILY_Recap requires country ISO codes to be separated by a comma in the URL.
         recap_countries_to_request += iso_code + ","
-
-
 
     with open(
             "{}/AA_to_download.json".format(path), "w"

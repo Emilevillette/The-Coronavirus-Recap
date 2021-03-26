@@ -10,7 +10,7 @@ from datetime import date, timedelta
 
 
 def daily_directory(path="", yesterday=False):
-    """Creates a directory named "aaaa-mm-jj" in /data/aaaa-mm-jj
+    """Creates a directory named "aaaa-mm-jj" in /data/aaaa-mm-jj.
 
     :param yesterday: return yesterday's path
     :param path: a string specifying the path where to create the daily path (defaults as ../data/aaaa-mm-jj
