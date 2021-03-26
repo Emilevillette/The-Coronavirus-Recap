@@ -9,13 +9,13 @@ Emile Villette - March 2021
 """
 import json
 import os
-import time
 import sys
+import time
+
+import progressbar
 
 import directoryManager
 import downloadFile
-
-import progressbar
 
 
 def download_stats(yesterday=False):
@@ -72,16 +72,27 @@ def download_stats(yesterday=False):
     no_numbers_countries = []
 
     # Progress bar to monitor clearly download state
-    progress_widgets = [progressbar.FormatLabel(""), progressbar.Percentage(), " ",
-                        progressbar.Bar(marker="█", left="[", right="]", fill="░"), " ", progressbar.AdaptiveETA(),
-                        progressbar.FormatLabel("")]
+    progress_widgets = [
+        progressbar.FormatLabel(""),
+        progressbar.Percentage(),
+        " ",
+        progressbar.Bar(marker="█", left="[", right="]", fill="░"),
+        " ",
+        progressbar.AdaptiveETA(),
+        progressbar.FormatLabel(""),
+    ]
 
-    for i in progressbar.progressbar(range(len(country_list["iso_codes"])), redirect_stdout=True,
-                                     widgets=progress_widgets):
+    for i in progressbar.progressbar(
+        range(len(country_list["iso_codes"])),
+        redirect_stdout=True,
+        widgets=progress_widgets,
+    ):
         # Get the ISO_code from the user's desired country list
         iso_code = country_list["iso_codes"][i]
 
-        progress_widgets[0] = progressbar.FormatLabel('Processing country {}: '.format(iso_code))
+        progress_widgets[0] = progressbar.FormatLabel(
+            "Processing country {}: ".format(iso_code)
+        )
 
         if os.path.exists(path + "/" + iso_code + ".json"):
 
@@ -94,9 +105,13 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         else:
             # Download the "country"'s daily data
@@ -109,17 +124,22 @@ def download_stats(yesterday=False):
             )
             if check:
                 no_numbers_countries.append(iso_code)
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: No data".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: No data".format(iso_code)
+                )
             else:
-                progress_widgets[-1] = progressbar.FormatLabel(" | {}: OK".format(iso_code))
+                progress_widgets[-1] = progressbar.FormatLabel(
+                    " | {}: OK".format(iso_code)
+                )
 
         # Download the "country"'s vaccine data in the last five days.
         if not iso_code in vaccine_properties:
             days_ago = 5
             for tries in range(4):
                 try_vaccine_data = downloadFile.download_file(
-                    "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays={}".format(iso_code,
-                                                                                                      days_ago),
+                    "https://disease.sh/v3/covid-19/vaccine/coverage/countries/{}?lastdays={}".format(
+                        iso_code, days_ago
+                    ),
                     ".json",
                     iso_code + "_VACCINE",
                     path + "/vaccine",
@@ -138,7 +158,7 @@ def download_stats(yesterday=False):
         json.dump(vaccine_data_confirmed, vaccine_check)
 
     with open(
-            "{}/AA_to_download.json".format(path), "w"
+        "{}/AA_to_download.json".format(path), "w"
     ) as updated_no_numbers_countries:
         json.dump(no_numbers_countries, updated_no_numbers_countries)
 
