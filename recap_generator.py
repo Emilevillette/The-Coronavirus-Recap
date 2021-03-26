@@ -26,6 +26,10 @@ def generate_recap(recap_file, path, user_data, total):
         data = json.loads(file.read())
 
     user_cases = user_data["countries"].split(",")
+    user_vaccine = user_data["vaccine detail"].split(",")
+    user_critical = user_data["critical"].split(",")
+    user_100k = user_data["active cases per 100k"].split(",")
+    user_recovered = user_data["recovered today"].split(",")
 
     with open("languages/countries.json", "r") as countries_file:
         countries_data = json.load(countries_file)
@@ -55,15 +59,16 @@ def generate_recap(recap_file, path, user_data, total):
             data[user_cases[country]]["todayDeaths"],
             data[user_cases[country]]["todayCases"],
         )
-        recap += critical_sentence.format(
-            data[user_cases[country]]["critical"])
-        if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
+        if user_cases[country] in user_critical:
+            recap += critical_sentence.format(
+                data[user_cases[country]]["critical"])
 
-            recap += vaccine_sentence.format(
-                vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
-            )
-        else:
-            recap += "\n"
+        if user_cases[country] in user_vaccine:
+            if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
+                recap += vaccine_sentence.format(
+                    vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
+                )
+        recap += "\n"
 
     with open(path + total, "r") as total_file:
         total_cases = json.loads(total_file.read())
