@@ -10,7 +10,9 @@ from time import sleep
 import requests
 
 
-def download_file(url, file_extension, category, path, case_file=False, vaccine_file=False, failed=0):
+def download_file(
+    url, file_extension, category, path, case_file=False, vaccine_file=False, failed=0
+):
     """Downloads a file from the internet and stores it in the specified directory.
 
     :param failed: Number of time the connection has failed, only called by function itself
@@ -32,7 +34,11 @@ def download_file(url, file_extension, category, path, case_file=False, vaccine_
             request_json = r.json()
             if "message" in request_json.keys():
                 pass
-            elif list(request_json["timeline"].values())[1] - list(request_json["timeline"].values())[0] == 0:
+            elif (
+                list(request_json["timeline"].values())[1]
+                - list(request_json["timeline"].values())[0]
+                == 0
+            ):
                 return True
 
         # Store acquired content in file in the desired path
