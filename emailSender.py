@@ -43,10 +43,8 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
     translated_content = translator.trans(new_content, "en", language)
     print(translated_content)
 
-    with yagmail.SMTP(sender) as yag:
-        if test_mode:
-            pass
-        else:
+    if not test_mode:
+        with yagmail.SMTP(sender) as yag:
             if mail_data["mails_sent"]:
                 print(
                     "WARNING : E-mails have already been sent today but test mode is disabled, please confirm "
@@ -55,7 +53,7 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
                 confirmation = input(
                     "Write 'yes' to proceed (type anything else to cancel) > "
                 )
-                if confirmation == "Yes":
+                if confirmation == "yes":
                     with open(path + "AA_mails_sent.json", "w") as log_mails_sent:
                         json.dump({"mails_sent": True}, log_mails_sent)
                     yag.send(recipient, subject, translated_content)

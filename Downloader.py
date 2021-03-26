@@ -83,9 +83,9 @@ def download_stats(yesterday=False):
     ]
 
     for i in progressbar.progressbar(
-        range(len(country_list["iso_codes"])),
-        redirect_stdout=True,
-        widgets=progress_widgets,
+            range(len(country_list["iso_codes"])),
+            redirect_stdout=True,
+            widgets=progress_widgets,
     ):
         # Get the ISO_code from the user's desired country list
         iso_code = country_list["iso_codes"][i]
@@ -136,7 +136,7 @@ def download_stats(yesterday=False):
         if iso_code not in vaccine_properties:
             for tries in range(4):
                 try_vaccine_data = downloadFile.download_file(
-                    f"https://disease.sh/v3/covid-19/vaccine/coverage/countries/{iso_code}?lastdays={5+tries}",
+                    f"https://disease.sh/v3/covid-19/vaccine/coverage/countries/{iso_code}?lastdays={5 + tries}",
                     ".json",
                     iso_code + "_VACCINE",
                     path + "/vaccine",
@@ -153,7 +153,7 @@ def download_stats(yesterday=False):
         json.dump(vaccine_data_confirmed, vaccine_check)
 
     with open(
-        "{}/AA_to_download.json".format(path), "w"
+            "{}/AA_to_download.json".format(path), "w"
     ) as updated_no_numbers_countries:
         json.dump(no_numbers_countries, updated_no_numbers_countries)
 
