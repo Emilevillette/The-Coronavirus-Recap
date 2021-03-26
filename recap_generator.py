@@ -7,6 +7,7 @@ Emile Villette - March 2021
 """
 import json
 import locale
+import os
 
 
 def generate_recap(recap_file, path, user_data, total):
@@ -45,10 +46,11 @@ def generate_recap(recap_file, path, user_data, total):
     recap = ""
 
     for country in range(len(user_cases)):
-        with open(
-                path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
-        ) as vaccine_file:
-            vaccine_data = json.loads(vaccine_file.read())
+        if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json"):
+            with open(
+                    path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
+            ) as vaccine_file:
+                vaccine_data = json.loads(vaccine_file.read())
 
         vaccine_delta = []
         for day in vaccine_data["timeline"].values():
@@ -63,7 +65,7 @@ def generate_recap(recap_file, path, user_data, total):
             recap += critical_sentence.format(
                 data[user_cases[country]]["critical"])
 
-        if user_cases[country] in user_vaccine:
+        if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json") and (user_cases[country] in user_vaccine):
             if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
                 recap += vaccine_sentence.format(
                     vaccine_delta[1], int(vaccine_delta[1]) - int(vaccine_delta[0])
