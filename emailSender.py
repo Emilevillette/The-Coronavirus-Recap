@@ -51,7 +51,7 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
                     "before proceeding."
                 )
                 confirmation = input(
-                    "Write 'yes' to proceed (type anything else to cancel) ? > "
+                    "Write 'yes' to proceed (type anything else to cancel) > "
                 )
                 if confirmation == "Yes":
                     with open(path + "AA_mails_sent.json", "w") as log_mails_sent:
