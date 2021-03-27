@@ -5,5 +5,7 @@
   "global_cases": "{:n} (+{:n}) cases and {:n} (+{:n}) deaths worldwide.",
   "global_vaccine": "A total of {:n} vaccines have been administrated globally (+{:n} today).",
   "vaccine_warning": "N.B.: Worldometers' vaccine data isn't updated on a daily basis, thus it's normal to have a lot of countries without new vaccinations.",
-  "email_header": "Dear {},\n Here is your daily COVID-19 recap (according to your chosen countries):\n"
+  "email_header": "Dear {},\n Here is your daily COVID-19 recap (according to your chosen countries):\n",
+  "no_data": "{}: No data was published today for this country. It will be in tomorrow's recap if available.",
+  "yesterday_missed_data": "Yesterday, some countries had not published their datasets yet, here is a summary of what you missed in your country selection:"
 }
