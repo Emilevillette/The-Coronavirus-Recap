@@ -10,7 +10,7 @@ import locale
 import os
 
 
-def generate_recap(recap_file, path, user_data, total):
+def generate_recap(recap_file, path, user_data, total, test_mode=False):
     """
 
     :param total: the filename with the total cases in it
@@ -25,6 +25,10 @@ def generate_recap(recap_file, path, user_data, total):
     # Open json file with list of chosen countries
     with open(path + recap_file, "r") as file:
         data = json.loads(file.read())
+
+    if not test_mode:
+        with open(f"{path}AA_to_download.json", "r") as missing_data_file:
+            missing_countries = json.load(missing_data_file)
 
     user_cases = user_data["countries"].split(",")
     user_vaccine = user_data["vaccine detail"].split(",")
