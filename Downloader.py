@@ -59,7 +59,6 @@ def download_stats(yesterday=False):
     for i in unprocessed_data:
         processed_json[i["countryInfo"]["iso2"]] = i
     with open(path + "/AA_RawDataProcessed.json", "w") as AA_processed:
-        processed_json["BE"]["updated"] = 0
         json.dump(processed_json, AA_processed)
 
     if os.path.exists("{}/AA_to_download.json".format(path)):
