@@ -39,4 +39,15 @@ def main_function(test=True):
 
 
 if __name__ == "__main__":
-    main_function(test=input("Test mode ? >"))
+    while True:
+        test = input("Test mode (True or False)? >")
+        if test in ["True", "true"]:
+            test = True
+            break
+        elif test in ["False", "false"]:
+            test = False
+            break
+        else:
+            print("Invalid entry, try again")
+
+    main_function(test=test)
