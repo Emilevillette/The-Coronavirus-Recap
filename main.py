@@ -50,10 +50,9 @@ if __name__ == "__main__":
         if test in ["True", "true"]:
             test = True
             break
-        elif test in ["False", "false"]:
+        if test in ["False", "false"]:
             test = False
             break
-        else:
-            print("Invalid entry, try again")
+        print("Invalid entry, try again")
 
     main_function(test=test)
