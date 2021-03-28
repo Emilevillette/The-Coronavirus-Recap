@@ -13,7 +13,8 @@ from Downloader import download_stats
 from emailSender import send_email
 from recap_generator import generate_recap
 
-if __name__ == "__main__":
+
+def main_function(test=True):
     download_stats(yesterday=True)
     path = download_stats() + "/"
 
@@ -21,7 +22,13 @@ if __name__ == "__main__":
         with open(file, "r") as user:
             data = json.load(user)
         recap = generate_recap(
-            "AA_RawDataProcessed.json", path, data["preferences"], "AA_DAILY_TOTAL.json"
+            "AA_RawDataProcessed.json",
+            path,
+            data["preferences"],
+            "AA_DAILY_TOTAL.json",
+            data["yesterday_missing"],
+            data["uuid"],
+            test_mode=False,
         )
         check_for_abortion = send_email(
             data["language"],
@@ -30,8 +37,22 @@ if __name__ == "__main__":
             "coronarecap@gmail.com",
             data["email"],
             path,
-            test_mode=True,
+            test_mode=test,
         )
         if check_for_abortion == "Aborted":
             break
         time.sleep(0.5)
+
+
+if __name__ == "__main__":
+    while True:
+        test = input("Test mode (True or False)? >")
+        if test in ["True", "true"]:
+            test = True
+            break
+        if test in ["False", "false"]:
+            test = False
+            break
+        print("Invalid entry, try again")
+
+    main_function(test=test)

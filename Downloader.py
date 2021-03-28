@@ -134,7 +134,7 @@ def download_stats(yesterday=False):
 
         # Download the "country"'s vaccine data in the last five days.
         if iso_code not in vaccine_properties:
-            for tries in range(4):
+            for tries in range(2):
                 try_vaccine_data = downloadFile.download_file(
                     f"https://disease.sh/v3/covid-19/vaccine/coverage/countries/{iso_code}?lastdays={5 + tries}",
                     ".json",
