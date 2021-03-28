@@ -22,8 +22,14 @@ def main_function(test=True):
         with open(file, "r") as user:
             data = json.load(user)
         recap = generate_recap(
-            "AA_RawDataProcessed.json", path, data["preferences"], "AA_DAILY_TOTAL.json", data["yesterday_missing"],
-            data["uuid"], test_mode=False)
+            "AA_RawDataProcessed.json",
+            path,
+            data["preferences"],
+            "AA_DAILY_TOTAL.json",
+            data["yesterday_missing"],
+            data["uuid"],
+            test_mode=False,
+        )
         check_for_abortion = send_email(
             data["language"],
             "Recap Coronavirus " + str(date.today()),
