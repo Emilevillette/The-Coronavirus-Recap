@@ -108,10 +108,8 @@ def generate_per_country_recap(
     test_mode,
     uuid,
     treating_missing=False,
-    missing_list=None,
+    missing_list=[],
 ):
-    if missing_list is None:
-        missing_list = []
     today_missing_countries = []
     if treating_missing:
         user_cases = missing_list
