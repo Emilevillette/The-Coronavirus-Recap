@@ -64,4 +64,4 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
                 with open(path + "AA_mails_sent.json", "w") as log_mails_sent:
                     json.dump({"mails_sent": True}, log_mails_sent)
                 yag.send(recipient, subject, translated_content)
-    yag.close()
+        yag.close()
