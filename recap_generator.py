@@ -112,7 +112,7 @@ def generate_per_country_recap(
 
     today_missing_countries = []
     if treating_missing:
-        user_cases = missing_list
+        user_cases = missing_list.copy()
     else:
         user_cases = user_data["countries"].split(",")
     user_vaccine = user_data["vaccine detail"].split(",")
