@@ -12,7 +12,7 @@ from datetime import date, timedelta
 
 
 def generate_recap(
-    recap_file, path, user_data, total, yesterday_missing, uuid, test_mode=False
+        recap_file, path, user_data, total, yesterday_missing, uuid, test_mode=False
 ):
     """
 
@@ -51,17 +51,17 @@ def generate_recap(
         total_cases = json.loads(total_file.read())
 
     recap += (
-        language_data["global_cases"].format(
-            total_cases["cases"],
-            total_cases["todayCases"],
-            total_cases["deaths"],
-            total_cases["todayDeaths"],
-        )
-        + "\n"
+            language_data["global_cases"].format(
+                total_cases["cases"],
+                total_cases["todayCases"],
+                total_cases["deaths"],
+                total_cases["todayDeaths"],
+            )
+            + "\n"
     )
 
     with open(
-        path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
+            path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
     ) as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
 
@@ -72,11 +72,11 @@ def generate_recap(
 
     if int(total_vaccine_data[1]) - int(total_vaccine_data[0]) > 0:
         recap += (
-            language_data["global_vaccine"].format(
-                total_vaccine_data[1],
-                int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
-            )
-            + "\n"
+                language_data["global_vaccine"].format(
+                    total_vaccine_data[1],
+                    int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
+                )
+                + "\n"
         )
 
     if len(yesterday_missing) > 0:
@@ -98,15 +98,15 @@ def generate_recap(
 
 
 def generate_per_country_recap(
-    path,
-    user_data,
-    language_data,
-    countries_data,
-    data,
-    test_mode,
-    uuid,
-    treating_missing=False,
-    missing_list=[],
+        inner_path,
+        user_data,
+        language_data,
+        countries_data,
+        data,
+        test_mode,
+        uuid,
+        treating_missing=False,
+        missing_list=[],
 ):
     inner_recap = ""
 
@@ -126,24 +126,27 @@ def generate_per_country_recap(
     no_data_sentence = language_data["no_data"] + "\n"
     still_no_data_sentence = language_data["still_no_data"] + "\n"
 
-    with open(f"{path}/AA_to_download.json", "r") as missing_data_file:
+    with open(f"{inner_path}/AA_to_download.json", "r") as missing_data_file:
         missing_countries = json.load(missing_data_file)
 
     for country in range(len(user_cases)):
-        if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json"):
+        if os.path.isfile(f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json"):
             with open(
-                path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
+                    inner_path + "vaccine/" + user_cases[country] + "_VACCINE.json", "r"
             ) as vaccine_file:
                 vaccine_data = json.loads(vaccine_file.read())
+        else:
+            vaccine_data = None
 
-        vaccine_delta = []
-        for day in vaccine_data["timeline"].values():
-            vaccine_delta.append(day)
+        if vaccine_data is not None:
+            vaccine_delta = []
+            for day in vaccine_data["timeline"].values():
+                vaccine_delta.append(day)
 
         if treating_missing:
             if (
-                data[user_cases[country]]["todayDeaths"] == 0
-                and data[user_cases[country]]["todayCases"] == 0
+                    data[user_cases[country]]["todayDeaths"] == 0
+                    and data[user_cases[country]]["todayCases"] == 0
             ):
                 inner_recap += still_no_data_sentence.format(
                     countries_data["couples"][user_cases[country]]
@@ -171,9 +174,8 @@ def generate_per_country_recap(
             inner_recap += critical_sentence.format(
                 data[user_cases[country]]["critical"]
             )
-
-        if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json") and (
-            user_cases[country] in user_vaccine
+        if vaccine_data is not None and os.path.isfile(f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json") and (
+                user_cases[country] in user_vaccine
         ):
             if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
                 inner_recap += vaccine_sentence.format(

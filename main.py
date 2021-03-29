@@ -9,8 +9,6 @@ import os
 import time
 from datetime import date
 
-import yagmail
-
 from Downloader import download_stats
 from emailSender import send_email
 from recap_generator import generate_recap

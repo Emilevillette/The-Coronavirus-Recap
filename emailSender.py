@@ -43,6 +43,7 @@ def send_email(
     else:
         with open(path + "AA_mails_sent.json", "w") as mail_file:
             json.dump({"mails_sent": False}, mail_file)
+            mail_data = {"mails_sent": False}
 
     new_content = (
         language_data["email_header"].format(
