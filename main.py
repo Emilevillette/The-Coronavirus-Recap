@@ -12,6 +12,7 @@ from datetime import date
 from Downloader import download_stats
 from emailSender import send_email
 from recap_generator import generate_recap
+import yagmail
 
 
 def main_function(test=True):
@@ -37,6 +38,7 @@ def main_function(test=True):
             "coronarecap@gmail.com",
             data["email"],
             path,
+            "User_data/OAUTH2/OAUTH2.json",
             test_mode=test,
         )
         if check_for_abortion == "Aborted":

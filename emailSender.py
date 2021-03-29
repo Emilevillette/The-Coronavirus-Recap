@@ -13,7 +13,7 @@ import yagmail
 import translator
 
 
-def send_email(language, subject, content, sender, recipient, path, test_mode=False):
+def send_email(language, subject, content, sender, recipient, path, oauth2_userfile, test_mode=False):
     """Send an email.
 
     :param path: path where the data is stored
@@ -36,15 +36,15 @@ def send_email(language, subject, content, sender, recipient, path, test_mode=Fa
             json.dump({"mails_sent": False}, mail_file)
 
     new_content = (
-        language_data["email_header"].format(
-            recipient.split("@")[0]) + "\n" + content
+            language_data["email_header"].format(
+                recipient.split("@")[0]) + "\n" + content
     )
 
     translated_content = translator.trans(new_content, "en", language)
     print(translated_content)
 
     if not test_mode:
-        with yagmail.SMTP(sender) as yag:
+        with yagmail.SMTP(sender, oauth2_file=oauth2_userfile) as yag:
             if mail_data["mails_sent"]:
                 print(
                     "WARNING : E-mails have already been sent today but test mode is disabled, please confirm "

@@ -139,3 +139,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+User_data/OAUTH2/OAUTH2.json
