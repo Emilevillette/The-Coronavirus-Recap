@@ -41,9 +41,11 @@ def main_function(test=True):
         )
         if check_for_abortion == "Aborted":
             break
-        print("""
+        print(
+            """
         ---------------------------------------------------------
-        """)
+        """
+        )
         time.sleep(0.5)
 
 
