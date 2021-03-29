@@ -44,7 +44,7 @@ def generate_recap(
     recap = ""
 
     recap += generate_per_country_recap(
-        recap, path, user_data, language_data, countries_data, data, test_mode, uuid
+        path, user_data, language_data, countries_data, data, test_mode, uuid
     )
 
     with open(path + total, "r") as total_file:
@@ -83,7 +83,6 @@ def generate_recap(
         recap += "\n\n" + yesterday_sentence
         new_path = f"data/{str(date.today() - timedelta(days=1))}/"
         recap += generate_per_country_recap(
-            recap,
             new_path,
             user_data,
             language_data,
@@ -99,7 +98,6 @@ def generate_recap(
 
 
 def generate_per_country_recap(
-    recap,
     path,
     user_data,
     language_data,
@@ -110,6 +108,8 @@ def generate_per_country_recap(
     treating_missing=False,
     missing_list=[],
 ):
+    inner_recap = ""
+
     today_missing_countries = []
     if treating_missing:
         user_cases = missing_list
@@ -145,41 +145,41 @@ def generate_per_country_recap(
                 data[user_cases[country]]["todayDeaths"] == 0
                 and data[user_cases[country]]["todayCases"] == 0
             ):
-                recap += still_no_data_sentence.format(
+                inner_recap += still_no_data_sentence.format(
                     countries_data["couples"][user_cases[country]]
                 )
             else:
-                recap += case_sentence.format(
+                inner_recap += case_sentence.format(
                     countries_data["couples"][user_cases[country]],
                     data[user_cases[country]]["todayDeaths"],
                     data[user_cases[country]]["todayCases"],
                 )
         else:
             if user_cases[country] not in missing_countries:
-                recap += case_sentence.format(
+                inner_recap += case_sentence.format(
                     countries_data["couples"][user_cases[country]],
                     data[user_cases[country]]["todayDeaths"],
                     data[user_cases[country]]["todayCases"],
                 )
             else:
-                recap += no_data_sentence.format(
+                inner_recap += no_data_sentence.format(
                     countries_data["couples"][user_cases[country]]
                 )
                 today_missing_countries.append(user_cases[country])
 
         if user_cases[country] in user_critical:
-            recap += critical_sentence.format(
+            inner_recap += critical_sentence.format(
                 data[user_cases[country]]["critical"])
 
         if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json") and (
             user_cases[country] in user_vaccine
         ):
             if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
-                recap += vaccine_sentence.format(
+                inner_recap += vaccine_sentence.format(
                     vaccine_delta[1], int(
                         vaccine_delta[1]) - int(vaccine_delta[0])
                 )
-        recap += "\n"
+        inner_recap += "\n"
 
         if not treating_missing and not test_mode:
             with open(f"User_data/Users/{uuid}.json", "r") as read_user_data:
@@ -188,4 +188,4 @@ def generate_per_country_recap(
             with open(f"User_data/Users/{uuid}.json", "w") as write_user_data:
                 json.dump(old_data, write_user_data)
 
-    return recap
+    return inner_recap
