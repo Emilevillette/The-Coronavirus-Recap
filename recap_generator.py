@@ -169,7 +169,8 @@ def generate_per_country_recap(
 
         if user_cases[country] in user_critical:
             inner_recap += critical_sentence.format(
-                data[user_cases[country]]["critical"])
+                data[user_cases[country]]["critical"]
+            )
 
         if os.path.isfile(f"{path}/vaccine/{user_cases[country]}_VACCINE.json") and (
             user_cases[country] in user_vaccine
