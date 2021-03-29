@@ -13,7 +13,16 @@ import yagmail
 import translator
 
 
-def send_email(language, subject, content, sender, recipient, path, oauth2_userfile, test_mode=False):
+def send_email(
+    language,
+    subject,
+    content,
+    sender,
+    recipient,
+    path,
+    oauth2_userfile,
+    test_mode=False,
+):
     """Send an email.
 
     :param path: path where the data is stored
@@ -36,8 +45,8 @@ def send_email(language, subject, content, sender, recipient, path, oauth2_userf
             json.dump({"mails_sent": False}, mail_file)
 
     new_content = (
-            language_data["email_header"].format(
-                recipient.split("@")[0]) + "\n" + content
+        language_data["email_header"].format(
+            recipient.split("@")[0]) + "\n" + content
     )
 
     translated_content = translator.trans(new_content, "en", language)
