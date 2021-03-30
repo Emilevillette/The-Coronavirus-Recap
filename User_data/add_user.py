@@ -26,7 +26,12 @@ def add_user_in_db(email, language, preferences_countries):
         )
         # USER PREFERENCES ENCODING TBI
         template["preferences"]["countries"] = preferences_countries
+        template["preferences"]["vaccine detail"] = preferences_countries
+        template["preferences"]["critical"] = preferences_countries
 
         user.write(str(template).replace("'", '"'))
 
         return True
+
+
+add_user_in_db("lorenz@teamtumbleweed.eu", "ru", "BE,CA,BR,AR,NL,UA")
