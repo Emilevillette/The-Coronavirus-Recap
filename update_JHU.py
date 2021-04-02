@@ -102,9 +102,10 @@ def update_raw():
         progressbar.AdaptiveETA(),
     ]
 
-    for progression in progressbar.progressbar(range(4, len(cases.columns.values[4:-14])), widgets=progress_widgets):
+    for progression in progressbar.progressbar(range(4, len(cases.columns.values[4:])), widgets=progress_widgets):
         i = cases.columns.values[progression]
-
+        if str(parse(i).date()) == "2021-03-14":
+            break
         directoryManager.daily_directory(choose_date=parse(i).date())
         for j in range(len(cases)):
             if cases["Country/Region"][j] not in countries_info["EN"]:
