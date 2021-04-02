@@ -8,11 +8,10 @@ import os
 from datetime import datetime, timedelta
 
 import pandas
+import progressbar
 from dateutil.parser import parse
 
 import directoryManager
-
-import progressbar
 import downloadFile
 
 
@@ -23,15 +22,25 @@ def update_raw():
         # print(reference_data[current_data["countryInfo"]["iso2"]], current_data["countryInfo"]["iso2"])
         current_data["country"] = cases["Country/Region"][j]
         current_data["countryInfo"]["iso2"] = str(
-            countries_info["inverted_couples"][cases["Country/Region"][j]])
+            countries_info["inverted_couples"][cases["Country/Region"][j]]
+        )
         current_data["countryInfo"][
-            'flag'] = f"""https://disease.sh/assets/img/flags/{current_data["countryInfo"]["iso2"]}.png"""
+            "flag"
+        ] = f"""https://disease.sh/assets/img/flags/{current_data["countryInfo"]["iso2"]}.png"""
         current_data["countryInfo"]["lat"] = str(cases["Lat"][j])
         current_data["countryInfo"]["long"] = str(cases["Long"][j])
-        current_data["countryInfo"]["iso3"] = reference_data[current_data["countryInfo"]["iso2"]]["countryInfo"]["iso3"]
-        current_data["countryInfo"]["_id"] = reference_data[current_data["countryInfo"]["iso2"]]["countryInfo"]["_id"]
-        current_data["population"] = reference_data[current_data["countryInfo"]["iso2"]]["population"]
-        current_data["continent"] = reference_data[current_data["countryInfo"]["iso2"]]["continent"]
+        current_data["countryInfo"]["iso3"] = reference_data[
+            current_data["countryInfo"]["iso2"]
+        ]["countryInfo"]["iso3"]
+        current_data["countryInfo"]["_id"] = reference_data[
+            current_data["countryInfo"]["iso2"]
+        ]["countryInfo"]["_id"]
+        current_data["population"] = reference_data[
+            current_data["countryInfo"]["iso2"]
+        ]["population"]
+        current_data["continent"] = reference_data[current_data["countryInfo"]["iso2"]][
+            "continent"
+        ]
         return current_data
 
     downloadFile.download_file(
@@ -102,7 +111,9 @@ def update_raw():
         progressbar.AdaptiveETA(),
     ]
 
-    for progression in progressbar.progressbar(range(4, len(cases.columns.values[4:-14])), widgets=progress_widgets):
+    for progression in progressbar.progressbar(
+        range(4, len(cases.columns.values[4:-14])), widgets=progress_widgets
+    ):
         i = cases.columns.values[progression]
 
         directoryManager.daily_directory(choose_date=parse(i).date())
@@ -145,19 +156,32 @@ def update_raw():
                     current_data["todayDeaths"] = 0
                     current_data["todayRecovered"] = 0
                 current_data = match_country_info()
-                current_data["casesPerOneMillion"] = (current_data["cases"] / current_data["population"]) * 1000000
+                current_data["casesPerOneMillion"] = (
+                    current_data["cases"] / current_data["population"]
+                ) * 1000000
                 if current_data["cases"] != 0:
-                    current_data["casesPerOneMillion"] = (current_data["cases"] / current_data["population"]) * 1000000
-                    current_data["oneCasePerPeople"] = int(round(current_data["population"] / current_data["cases"]))
+                    current_data["casesPerOneMillion"] = (
+                        current_data["cases"] / current_data["population"]
+                    ) * 1000000
+                    current_data["oneCasePerPeople"] = int(
+                        round(current_data["population"] /
+                              current_data["cases"])
+                    )
                 if current_data["deaths"] != 0:
-                    current_data["deathsPerOneMillion"] = (current_data["deaths"] / current_data[
-                        "population"]) * 1000000
-                    current_data["oneDeathPerPeople"] = int(round(current_data["population"] / current_data["deaths"]))
-                current_data["recoveredPerOneMillion"] = (current_data["recovered"] / current_data[
-                    "population"]) * 1000000
+                    current_data["deathsPerOneMillion"] = (
+                        current_data["deaths"] / current_data["population"]
+                    ) * 1000000
+                    current_data["oneDeathPerPeople"] = int(
+                        round(current_data["population"] /
+                              current_data["deaths"])
+                    )
+                current_data["recoveredPerOneMillion"] = (
+                    current_data["recovered"] / current_data["population"]
+                ) * 1000000
                 with open(
-                        f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                        "w") as current_country2:
+                    f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                    "w",
+                ) as current_country2:
                     json.dump(current_data, current_country2)
 
                 with open(
@@ -198,14 +222,24 @@ def update_raw():
                     current_data["todayRecovered"] = 0
                 current_data = match_country_info()
                 if current_data["cases"] != 0:
-                    current_data["casesPerOneMillion"] = (current_data["cases"] / current_data["population"]) * 1000000
-                    current_data["oneCasePerPeople"] = int(round(current_data["population"] / current_data["cases"]))
+                    current_data["casesPerOneMillion"] = (
+                        current_data["cases"] / current_data["population"]
+                    ) * 1000000
+                    current_data["oneCasePerPeople"] = int(
+                        round(current_data["population"] /
+                              current_data["cases"])
+                    )
                 if current_data["deaths"] != 0:
-                    current_data["deathsPerOneMillion"] = (current_data["deaths"] / current_data[
-                        "population"]) * 1000000
-                    current_data["oneDeathPerPeople"] = int(round(current_data["population"] / current_data["deaths"]))
-                current_data["recoveredPerOneMillion"] = (current_data["recovered"] / current_data[
-                    "population"]) * 1000000
+                    current_data["deathsPerOneMillion"] = (
+                        current_data["deaths"] / current_data["population"]
+                    ) * 1000000
+                    current_data["oneDeathPerPeople"] = int(
+                        round(current_data["population"] /
+                              current_data["deaths"])
+                    )
+                current_data["recoveredPerOneMillion"] = (
+                    current_data["recovered"] / current_data["population"]
+                ) * 1000000
                 with open(
                     f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
                     "w",
