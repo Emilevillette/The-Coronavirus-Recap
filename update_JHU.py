@@ -3,14 +3,17 @@ Pull data from the John Hopkins University GitHub - https://github.com/CSSEGISan
 
 Emile Villette - March 2021
 """
-import downloadFile
-import pandas
-from datetime import timedelta, datetime
-from dateutil.parser import parse
-import directoryManager
 import json
 import os
+from datetime import datetime, timedelta
+
+import pandas
+from dateutil.parser import parse
+
+import directoryManager
+
 import progressbar
+import downloadFile
 
 
 def update_raw():
@@ -33,28 +36,62 @@ def update_raw():
 
     downloadFile.download_file(
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
-        ".csv", "JHU_time_series_cases", "data/JHU_DATA/")
+        ".csv",
+        "JHU_time_series_cases",
+        "data/JHU_DATA/",
+    )
     downloadFile.download_file(
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
-        ".csv", "JHU_time_series_deaths", "data/JHU_DATA/")
+        ".csv",
+        "JHU_time_series_deaths",
+        "data/JHU_DATA/",
+    )
     downloadFile.download_file(
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv",
-        ".csv", "JHU_time_series_recovered", "data/JHU_DATA/")
+        ".csv",
+        "JHU_time_series_recovered",
+        "data/JHU_DATA/",
+    )
 
-    with open('languages/countries.json', "r") as countries_file:
+    with open("languages/countries.json", "r") as countries_file:
         countries_info = json.load(countries_file)
 
     cases = pandas.read_csv("data/JHU_DATA/JHU_time_series_cases.csv")
     deaths = pandas.read_csv("data/JHU_DATA/JHU_time_series_deaths.csv")
     recovered = pandas.read_csv("data/JHU_DATA/JHU_time_series_recovered.csv")
 
-    example = {"updated": 0, "country": "country_full_name",
-               "countryInfo": {"_id": 0, "iso2": "CY", "iso3": "CTY", "lat": 0, "long": 0,
-                               "flag": "https://disease.sh/assets/img/flags/CT.png"}, "cases": 0, "todayCases": 0,
-               "deaths": 0, "todayDeaths": 0, "recovered": 0, "todayRecovered": 0, "active": 0, "critical": 0,
-               "casesPerOneMillion": 0, "deathsPerOneMillion": 0, "tests": 0, "testsPerOneMillion": 0, "population": 0,
-               "continent": "continent", "oneCasePerPeople": 0, "oneDeathPerPeople": 0, "oneTestPerPeople": 0,
-               "activePerOneMillion": 0, "recoveredPerOneMillion": 0, "criticalPerOneMillion": 0}
+    example = {
+        "updated": 0,
+        "country": "country_full_name",
+        "countryInfo": {
+            "_id": 0,
+            "iso2": "CY",
+            "iso3": "CTY",
+            "lat": 0,
+            "long": 0,
+            "flag": "https://disease.sh/assets/img/flags/CT.png",
+        },
+        "cases": 0,
+        "todayCases": 0,
+        "deaths": 0,
+        "todayDeaths": 0,
+        "recovered": 0,
+        "todayRecovered": 0,
+        "active": 0,
+        "critical": 0,
+        "casesPerOneMillion": 0,
+        "deathsPerOneMillion": 0,
+        "tests": 0,
+        "testsPerOneMillion": 0,
+        "population": 0,
+        "continent": "continent",
+        "oneCasePerPeople": 0,
+        "oneDeathPerPeople": 0,
+        "oneTestPerPeople": 0,
+        "activePerOneMillion": 0,
+        "recoveredPerOneMillion": 0,
+        "criticalPerOneMillion": 0,
+    }
 
     progress_widgets = [
         progressbar.FormatLabel(""),
@@ -73,10 +110,12 @@ def update_raw():
             if cases["Country/Region"][j] not in countries_info["EN"]:
                 continue
             elif os.path.isfile(
-                    f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json"""):
+                f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json"""
+            ):
                 with open(
-                        f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                        "r") as current_country:
+                    f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                    "r",
+                ) as current_country:
                     current_data = json.load(current_country)
                 progress_widgets[0] = progressbar.FormatLabel(f"{i}: ")
                 current_data["updated"] = unix_time_millis(parse(i))
@@ -88,13 +127,19 @@ def update_raw():
                     pass
                 try:
                     with open(
-                            f"""data/{str(parse(i).date() - timedelta(days=1))}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                            "r") as yesterday_file:
+                        f"""data/{str(parse(i).date() - timedelta(days=1))}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                        "r",
+                    ) as yesterday_file:
                         yesterday_data = json.load(yesterday_file)
-
-                    current_data["todayCases"] = current_data["cases"] - yesterday_data["cases"]
-                    current_data["todayDeaths"] = current_data["deaths"] - yesterday_data["deaths"]
-                    current_data["todayRecovered"] = current_data["recovered"] - yesterday_data["recovered"]
+                    current_data["todayCases"] = (
+                        current_data["cases"] - yesterday_data["cases"]
+                    )
+                    current_data["todayDeaths"] = (
+                        current_data["deaths"] - yesterday_data["deaths"]
+                    )
+                    current_data["todayRecovered"] = (
+                        current_data["recovered"] - yesterday_data["recovered"]
+                    )
                 except FileNotFoundError:
                     current_data["todayCases"] = 0
                     current_data["todayDeaths"] = 0
@@ -116,8 +161,9 @@ def update_raw():
                     json.dump(current_data, current_country2)
 
                 with open(
-                        f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                        'w') as new_country:
+                    f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                    "w",
+                ) as new_country:
                     json.dump(current_data, new_country)
             else:
                 current_data = example.copy()
@@ -133,12 +179,19 @@ def update_raw():
 
                 try:
                     with open(
-                            f"""data/{str(parse(i).date() - timedelta(days=1))}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                            "r") as yesterday_file:
+                        f"""data/{str(parse(i).date() - timedelta(days=1))}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                        "r",
+                    ) as yesterday_file:
                         yesterday_data = json.load(yesterday_file)
-                    current_data["todayCases"] = current_data["cases"] - yesterday_data["cases"]
-                    current_data["todayDeaths"] = current_data["deaths"] - yesterday_data["deaths"]
-                    current_data["todayRecovered"] = current_data["recovered"] - yesterday_data["recovered"]
+                    current_data["todayCases"] = (
+                        current_data["cases"] - yesterday_data["cases"]
+                    )
+                    current_data["todayDeaths"] = (
+                        current_data["deaths"] - yesterday_data["deaths"]
+                    )
+                    current_data["todayRecovered"] = (
+                        current_data["recovered"] - yesterday_data["recovered"]
+                    )
                 except FileNotFoundError:
                     current_data["todayCases"] = 0
                     current_data["todayDeaths"] = 0
@@ -154,8 +207,9 @@ def update_raw():
                 current_data["recoveredPerOneMillion"] = (current_data["recovered"] / current_data[
                     "population"]) * 1000000
                 with open(
-                        f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
-                        "w") as current_country2:
+                    f"""data/{parse(i).date()}/{countries_info["inverted_couples"][cases["Country/Region"][j]]}.json""",
+                    "w",
+                ) as current_country2:
                     json.dump(current_data, current_country2)
 
 
