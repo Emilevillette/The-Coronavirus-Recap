@@ -18,11 +18,11 @@ def daily_directory(path="", yesterday=False, choose_date=date.today()):
     :return: the path (as a string)
     """
     if yesterday:
-        today = path + 'data/' + str(choose_date.today() - timedelta(days=1))
+        today = path + "data/" + str(choose_date.today() - timedelta(days=1))
     elif choose_date:
-        today = path + 'data/' + str(choose_date)
+        today = path + "data/" + str(choose_date)
     else:
-        today = path + 'data/' + str(choose_date.today())
+        today = path + "data/" + str(choose_date.today())
 
     if not os.path.exists(today):
         # Create main folder
