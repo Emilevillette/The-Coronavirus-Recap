@@ -16,6 +16,11 @@ import downloadFile
 
 
 def update_raw():
+    """
+    Updates the data from the JHU github repository until 14/03/2021.
+
+    :return: None
+    """
     def match_country_info() -> dict:
         with open("data/2021-03-31/AA_RawDataProcessed.json", "r") as reference_file:
             reference_data = json.load(reference_file)
