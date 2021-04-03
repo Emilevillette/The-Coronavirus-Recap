@@ -46,6 +46,7 @@ def generate_graph_data():
         except ParserError as e:
             print(f'{e} (Skipped non datetime file).')
 
+    # TODO: Make a copy of those files in website directory
     with open("data/graph_data/graph_data_cases.json", "w") as write_data:
         json.dump(data_cases, write_data)
 

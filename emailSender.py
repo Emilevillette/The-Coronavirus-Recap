@@ -25,6 +25,7 @@ def send_email(
 ):
     """Send an email.
 
+    :param oauth2_userfile: file with OAUTH2 google information. See Yagmail doc for more info.
     :param path: path where the data is stored
     :param test_mode: if set to True, doesn't send emails
     :param language: user's preferred language (ISO code, string)
@@ -37,6 +38,7 @@ def send_email(
     with open("languages/en.json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
 
+    # FIXME: Bug where the mails get checked at each execution, even if in the same execution
     if os.path.exists(path + "AA_mails_sent.json"):
         with open(path + "AA_mails_sent.json", "r") as mail_file:
             mail_data = json.load(mail_file)
