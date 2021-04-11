@@ -36,14 +36,20 @@ def generate_graph_data():
                 for country in countries_data["iso_codes"]:
                     try:
                         with open(
-                                f"data/{file.name}/{country}.json", "r"
+                            f"data/{file.name}/{country}.json", "r"
                         ) as current_country:
                             current_data = json.load(current_country)
-                        data_cases_today[country][file.name] = current_data["todayCases"]
+                        data_cases_today[country][file.name] = current_data[
+                            "todayCases"
+                        ]
                         data_cases[country][file.name] = current_data["cases"]
-                        data_deaths_today[country][file.name] = current_data["todayDeaths"]
+                        data_deaths_today[country][file.name] = current_data[
+                            "todayDeaths"
+                        ]
                         data_deaths[country][file.name] = current_data["deaths"]
-                        data_recovered_today[country][file.name] = current_data["todayRecovered"]
+                        data_recovered_today[country][file.name] = current_data[
+                            "todayRecovered"
+                        ]
                         data_recovered[country][file.name] = current_data["recovered"]
                     except FileNotFoundError:
                         print(f"No file named {country}, skipped entry.")
@@ -53,27 +59,44 @@ def generate_graph_data():
     # TODO: Make a copy of those files in website directory
     with open("data/graph_data/graph_data_cases.json", "w") as write_data:
         json.dump(data_cases, write_data)
-    copy2("data/graph_data/graph_data_cases.json", "website/static/graph_data_cases.json")
+    copy2(
+        "data/graph_data/graph_data_cases.json", "website/static/graph_data_cases.json"
+    )
 
     with open("data/graph_data/graph_data_cases_today.json", "w") as write_data:
         json.dump(data_cases_today, write_data)
-    copy2("data/graph_data/graph_data_cases_today.json", "website/static/graph_data_cases_today.json")
+    copy2(
+        "data/graph_data/graph_data_cases_today.json",
+        "website/static/graph_data_cases_today.json",
+    )
 
     with open("data/graph_data/graph_data_deaths.json", "w") as write_data:
         json.dump(data_deaths, write_data)
-    copy2("data/graph_data/graph_data_deaths.json", "website/static/graph_data_deaths.json")
+    copy2(
+        "data/graph_data/graph_data_deaths.json",
+        "website/static/graph_data_deaths.json",
+    )
 
     with open("data/graph_data/graph_data_deaths_today.json", "w") as write_data:
         json.dump(data_deaths_today, write_data)
-    copy2("data/graph_data/graph_data_deaths_today.json", "website/static/graph_data_deaths_today.json")
+    copy2(
+        "data/graph_data/graph_data_deaths_today.json",
+        "website/static/graph_data_deaths_today.json",
+    )
 
     with open("data/graph_data/graph_data_recovered.json", "w") as write_data:
         json.dump(data_recovered, write_data)
-    copy2("data/graph_data/graph_data_recovered.json", "website/static/graph_data_recovered.json")
+    copy2(
+        "data/graph_data/graph_data_recovered.json",
+        "website/static/graph_data_recovered.json",
+    )
 
     with open("data/graph_data/graph_data_recovered_today.json", "w") as write_data:
         json.dump(data_recovered_today, write_data)
-    copy2("data/graph_data/graph_data_recovered_today.json", "website/static/graph_data_recovered_today.json")
+    copy2(
+        "data/graph_data/graph_data_recovered_today.json",
+        "website/static/graph_data_recovered_today.json",
+    )
 
 
 if __name__ == "__main__":
