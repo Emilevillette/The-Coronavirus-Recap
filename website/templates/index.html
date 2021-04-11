@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <title>
         Corona recap landing page
@@ -8,6 +8,7 @@
     <!-- Chargement de la librairie Javascript à utiliser -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 
@@ -15,23 +16,37 @@
 <h1>
     Welcome to the Corona Recap's website.
 </h1>
-<div class="chart-container" style="position: relative; height: 40vh; width: 80vw">
-    <canvas id="my_chart" width="200px" height="200px"></canvas>
+<select id="choosecountry" onchange="updateChartData()">
+    <option value="FR">FR</option>
+    <option value="BE">BE</option>
+</select>
+<div class="chart-container" style="position: relative; height: 20vh; width: 40vw">
+    <canvas id="myChart" width="400" height="400"></canvas>
 </div>
+
 <script>
-    var ctx = document.getElementById("my_chart").getContext("2d")
-    var myChart = new Chart(ctx, {
-        type: "bar",
-        responsive: true,
-        maintainAspectRatio: true,
-        data: {
-            labels: ['test1', 'test2', 'test3'],
-            datasets: [{
-                label: "votes",
-                data: [10, 8, 1]
-            }]
-        }
+    var graph_data = $.getJSON("static/graph_data_cases.json", function(json){
+        console.log(json)
     });
+    var test = graph_data.responseText;
+    console.log(test);
+    console.log("here");
+    const labels = Object.keys(fetch_data);
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Total cases',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+        }]
+    };
+    const config = {
+        type: 'line',
+        data,
+        options: {}
+    };
+    var casesGraph = new Chart(document.getElementById("myChart"),
+        config
+    );
 </script>
-</body>
-</html>
