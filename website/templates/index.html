@@ -6,47 +6,96 @@
     </title>
     <meta charset="utf-8">
     <!-- Chargement de la librairie Javascript à utiliser -->
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        const tmp_today = new Date().toLocaleDateString()
+        const today = Date.parse(tmp_today)
+        const min_date = Date.parse("2020-01-22")
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                step: 86400000,
+                min: min_date,
+                max: today,
+                values: [min_date, today],
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                }
+            });
+            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+                " - $" + $("#slider-range").slider("values", 1));
+        });
+    </script>
 </head>
-
-
 <body>
 <h1>
     Welcome to the Corona Recap's website.
 </h1>
-<select id="choosecountry" onchange="updateChartData()">
+<p>
+    <label for="amount">Date range:</label>
+    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</p>
+<div id="slider-range"></div>
+<select id="choosecountry" onchange="">
     <option value="FR">FR</option>
     <option value="BE">BE</option>
 </select>
 <div class="chart-container" style="position: relative; height: 20vh; width: 40vw">
     <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart2" width="400" height="400"></canvas>
 </div>
-
 <script>
-    var graph_data = $.getJSON("static/graph_data_cases.json", function(json){
-        console.log(json)
-    });
-    var test = graph_data.responseText;
-    console.log(test);
-    console.log("here");
-    const labels = Object.keys(fetch_data);
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Total cases',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
-    const config = {
-        type: 'line',
-        data,
-        options: {}
-    };
-    var casesGraph = new Chart(document.getElementById("myChart"),
-        config
-    );
+    function updateChartData(chart_object) {
+        chart_object.update()
+    }
+</script>
+<script>
+    function generateGraph(path, country, canvas_id) {
+        $.getJSON(path, function (data) {
+            cases_graph(data, country, canvas_id);
+        });
+    }
+
+    function cases_graph(graph_data, country, canvas_id) {
+        const labels = Object.keys(graph_data[country])
+        const cases = Object.values(graph_data[country])
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Total cases ' + country,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: cases,
+            }]
+        };
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }
+            }
+        };
+        var casesGraph = new Chart(document.getElementById(canvas_id),
+            config
+        );
+    }
+
+    var country = document.getElementById("choosecountry")
+    var date = document.getElementById("dateRange")
+    generateGraph("static/graph_data_cases.json", "BE", "myChart");
+    generateGraph("static/graph_data_cases_today.json", "BE", "myChart2")
+    date.oninput = function () {
+
+
+    }
+
+
 </script>
