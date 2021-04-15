@@ -40,7 +40,6 @@ def send_email(
     with open("languages/en.json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
 
-    # FIXME: Bug where the mails get checked at each execution, even if in the same execution
     if os.path.exists(path + "AA_mails_sent.json"):
         with open(path + "AA_mails_sent.json", "r") as mail_file:
             mail_data = json.load(mail_file)
