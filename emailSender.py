@@ -14,17 +14,19 @@ import translator
 
 
 def send_email(
-    language,
-    subject,
-    content,
-    sender,
-    recipient,
-    path,
-    oauth2_userfile,
-    test_mode=False,
+        language,
+        subject,
+        content,
+        sender,
+        recipient,
+        path,
+        oauth2_userfile,
+        first_email=False,
+        test_mode=False,
 ):
-    """Send an email.
+    """Send an email through Gmail.
 
+    :param first_email: is this the first email?
     :param oauth2_userfile: file with OAUTH2 google information. See Yagmail doc for more info.
     :param path: path where the data is stored
     :param test_mode: if set to True, doesn't send emails
@@ -48,8 +50,8 @@ def send_email(
             mail_data = {"mails_sent": False}
 
     new_content = (
-        language_data["email_header"].format(
-            recipient.split("@")[0]) + "\n" + content
+            language_data["email_header"].format(
+                recipient.split("@")[0]) + "\n" + content
     )
 
     translated_content = translator.trans(new_content, "en", language)
@@ -58,13 +60,16 @@ def send_email(
     if not test_mode:
         with yagmail.SMTP(sender, oauth2_file=oauth2_userfile) as yag:
             if mail_data["mails_sent"]:
-                print(
-                    "WARNING : E-mails have already been sent today but test mode is disabled, please confirm "
-                    "before proceeding."
-                )
-                confirmation = input(
-                    "Write 'yes' to proceed (type anything else to cancel) > "
-                )
+                if first_email:
+                    print(
+                        "WARNING : E-mails have already been sent today but test mode is disabled, please confirm "
+                        "before proceeding."
+                    )
+                    confirmation = input(
+                        "Write 'yes' to proceed (type anything else to cancel) > "
+                    )
+                else:
+                    confirmation = "yes"
                 if confirmation == "yes":
                     with open(path + "AA_mails_sent.json", "w") as log_mails_sent:
                         json.dump({"mails_sent": True}, log_mails_sent)

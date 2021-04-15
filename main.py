@@ -18,9 +18,12 @@ def main_function(test=True):
     download_stats(yesterday=True)
     path = download_stats() + "/"
 
-    for file in os.scandir("User_data/Users"):
-        with open(file, "r") as user:
+    files = os.listdir("User_data/Users")
+
+    for file in files:
+        with open("User_data/Users/" + file, "r") as user:
             data = json.load(user)
+
         recap = generate_recap(
             "AA_RawDataProcessed.json",
             path,
@@ -30,6 +33,12 @@ def main_function(test=True):
             data["uuid"],
             test_mode=False,
         )
+
+        if file == files[0]:
+            first_email = True
+        else:
+            first_email = False
+
         check_for_abortion = send_email(
             data["language"],
             "Recap Coronavirus " + str(date.today()),
@@ -39,9 +48,12 @@ def main_function(test=True):
             path,
             "User_data/OAUTH2/OAUTH2.json",
             test_mode=test,
+            first_email=first_email,
         )
+
         if check_for_abortion == "Aborted":
             break
+
         print(
             """
         ---------------------------------------------------------
