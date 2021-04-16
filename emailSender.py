@@ -14,15 +14,15 @@ import translator
 
 
 def send_email(
-        language,
-        subject,
-        content,
-        sender,
-        recipient,
-        path,
-        oauth2_userfile,
-        first_email=False,
-        test_mode=False,
+    language,
+    subject,
+    content,
+    sender,
+    recipient,
+    path,
+    oauth2_userfile,
+    first_email=False,
+    test_mode=False,
 ):
     """Send an email through Gmail.
 
@@ -49,8 +49,8 @@ def send_email(
             mail_data = {"mails_sent": False}
 
     new_content = (
-            language_data["email_header"].format(
-                recipient.split("@")[0]) + "\n" + content
+        language_data["email_header"].format(
+            recipient.split("@")[0]) + "\n" + content
     )
 
     translated_content = translator.trans(new_content, "en", language)
