@@ -10,7 +10,7 @@ def hello_world():
 
 @app.route("/test.html")
 def test():
-    return render_template("index2.html")
+    return render_template("test.html")
 
 
 if __name__ == "__main__":

@@ -7,38 +7,17 @@
     <meta charset="utf-8">
     <!-- Chargement de la librairie Javascript à utiliser -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        const tmp_today = new Date().toLocaleDateString()
-        const today = Date.parse(tmp_today)
-        const min_date = Date.parse("2020-01-22")
-        $(function () {
-            $("#slider-range").slider({
-                range: true,
-                step: 86400000,
-                min: min_date,
-                max: today,
-                values: [min_date, today],
-                slide: function (event, ui) {
-                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-                }
-            });
-            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-                " - $" + $("#slider-range").slider("values", 1));
-        });
-    </script>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next"></script>
 </head>
 <body>
 <h1>
     Welcome to the Corona Recap's website.
 </h1>
-<p>
-    <label for="amount">Date range:</label>
-    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</p>
 <div id="slider-range"></div>
 <select id="choosecountry" onchange="">
     <option value="FR">FR</option>
@@ -49,50 +28,83 @@
     <canvas id="myChart2" width="400" height="400"></canvas>
 </div>
 <script>
-    function updateChartData(chart_object) {
-        chart_object.update()
+    function get_data_from_url(url) {
+        var http_req = new XMLHttpRequest();
+        http_req.open("GET", url, false);
+        http_req.send(null);
+        return http_req.responseText;
     }
 </script>
 <script>
-    function generateGraph(path, country, canvas_id) {
-        $.getJSON(path, function (data) {
-            cases_graph(data, country, canvas_id);
-        });
-    }
 
-    function cases_graph(graph_data, country, canvas_id) {
-        const labels = Object.keys(graph_data[country])
-        const cases = Object.values(graph_data[country])
+    function cases_graph(graph_data, country, canvas_id, description) {
+        const new_graph_data = JSON.parse(graph_data);
+        const labels = Object.keys(new_graph_data[country]);
+        const cases = Object.values(new_graph_data[country]);
         const data = {
             labels: labels,
             datasets: [{
-                label: 'Total cases ' + country,
+                label: description + country,
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: cases,
             }]
         };
-        const config = {
+
+        var ctx = document.getElementById(canvas_id).getContext('2d');
+        window.myBar = new window.Chart(ctx, {
             type: 'line',
-            data,
+            data: data,
             options: {
+                // Elements options apply to all of the options unless overridden in a dataset
+                // In this case, we are setting the border of each bar to be 2px wide and green
                 elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgb(0, 255, 0)',
+                        borderSkipped: 'bottom'
+                    },
                     point: {
                         radius: 0
+                    },
+                    line: {
+                        borderWidth: 2
                     }
-                }
+                },
+                responsive: true,
+                scales: {
+                    x: {}
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Bar Chart'
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            speed: 5,
+                            mode: 'x'
+                        },
+                        zoom: {
+                            enabled: true,
+                            mode: 'x',
+                            sensitivity: 0.001
+                        }
+                    },
+                },
             }
-        };
-        var casesGraph = new Chart(document.getElementById(canvas_id),
-            config
-        );
+        });
+
     }
 
     var country = document.getElementById("choosecountry")
     var date = document.getElementById("dateRange")
-    generateGraph("static/graph_data_cases.json", "BE", "myChart");
-    generateGraph("static/graph_data_cases_today.json", "BE", "myChart2")
-    date.oninput = function () {
-
-    }
+    const casesTotal = get_data_from_url("static/graph_data_cases.json")
+    const casesToday = get_data_from_url("static/graph_data_cases_today.json")
+    cases_graph(casesTotal, "BE", "myChart", "Total cases in ");
+    cases_graph(casesToday, "BE", "myChart2", "Daily cases in ");
 </script>
