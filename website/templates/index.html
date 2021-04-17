@@ -6,7 +6,7 @@
     </title>
     <meta charset="utf-8">
     <!-- Chargement de la librairie Javascript à utiliser -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.css"
           integrity="sha256-HJqQ2W8HjT/LsKZRHPUy+a5t8qhVq+C6PWQTuXQj3OY=" crossorigin="anonymous">
@@ -22,11 +22,12 @@
 <h1>
     Welcome to the Corona Recap's website.
 </h1>
-<input type="text" id="country"
-       onchange=update_charts(window.total,window.today)>
+<input type="text" id="country" onchange=update_charts()>
 <div class="chart-container" style="position: relative; height: 20vh; width: 40vw">
-    <canvas id="myChart" width="400" height="400"></canvas>
-    <canvas id="myChart2" width="400" height="400"></canvas>
+    <canvas id="totalCases" width="300" height="300"></canvas>
+    <canvas id="todayCases" width="300" height="300"></canvas>
+    <canvas id="totalDeaths" width="300" height="300"></canvas>
+    <canvas id="todayDeaths" width="300" height="300"></canvas>
 </div>
 <script>
     $("#country").countrySelect({
@@ -109,17 +110,28 @@
     var country = document.getElementById("choosecountry");
     var date = document.getElementById("dateRange");
     var countryData = ($("#country").countrySelect("getSelectedCountryData"))["iso2"].toUpperCase();
+
     const casesTotal = get_data_from_url("static/graph_data_cases.json");
     const casesToday = get_data_from_url("static/graph_data_cases_today.json");
-    window.total = cases_graph(casesTotal, countryData, "myChart", "Total cases in ");
-    window.today = cases_graph(casesToday, countryData, "myChart2", "Daily cases in ");
+    const deathsTotal = get_data_from_url("static/graph_data_deaths.json");
+    const deathsToday = get_data_from_url("static/graph_data_deaths_today.json");
 
-    function update_charts(totalChart, todayChart) {
-        totalChart.destroy();
-        console.log("here");
-        todayChart.destroy();
+    window.totalCases = cases_graph(casesTotal, countryData, "totalCases", "Total cases in ");
+    window.todayCases = cases_graph(casesToday, countryData, "todayCases", "Daily cases in ");
+    window.totalDeaths = cases_graph(deathsTotal, countryData, 'totalDeaths', "Total deaths in ");
+    window.todayDeaths = cases_graph(deathsToday, countryData, 'todayDeaths', "Daily deaths in ");
+
+    function update_charts() {
+        window.totalCases.destroy();
+        window.todayCases.destroy();
+        window.totalDeaths.destroy();
+        window.todayDeaths.destroy();
+
         var countryData = ($("#country").countrySelect("getSelectedCountryData"))["iso2"].toUpperCase();
-        window.total = cases_graph(casesTotal, countryData, "myChart", "Total cases in ");
-        window.today = cases_graph(casesToday, countryData, "myChart2", "Daily cases in ");
+
+        window.totalCases = cases_graph(casesTotal, countryData, "totalCases", "Total cases in ");
+        window.todayCases = cases_graph(casesToday, countryData, "todayCases", "Daily cases in ");
+        window.totalDeaths = cases_graph(deathsTotal, countryData, 'totalDeaths', "Total deaths in ");
+        window.todayDeaths = cases_graph(deathsToday, countryData, 'todayDeaths', "Daily deaths in ");
     }
 </script>
