@@ -8,25 +8,34 @@
     <!-- Chargement de la librairie Javascript à utiliser -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.css"
+          integrity="sha256-HJqQ2W8HjT/LsKZRHPUy+a5t8qhVq+C6PWQTuXQj3OY=" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/js/countrySelect.min.js"
+            integrity="sha256-CJtHxCZRQpS4Q4X7X4T8i/PcJC3ZKT0rnQ25bX4yM5Y=" crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>
     Welcome to the Corona Recap's website.
 </h1>
-<div id="slider-range"></div>
-<select id="choosecountry" onchange="">
-    <option value="FR">FR</option>
-    <option value="BE">BE</option>
-</select>
+<input type="text" id="country"
+       onchange=update_charts(window.total,window.today)>
 <div class="chart-container" style="position: relative; height: 20vh; width: 40vw">
     <canvas id="myChart" width="400" height="400"></canvas>
     <canvas id="myChart2" width="400" height="400"></canvas>
 </div>
+<script>
+    $("#country").countrySelect({
+        onlyCountries: ["af", "al", "dz", "ad", "ao", "ai", "ag", "ar", "am", "aw", "au", "at", "az", "bs", "bh", "bd", "bb", "by", "be", "bz", "bj", "bm", "bt", "bo", "ba", "bw", "br", "vg", "bn", "bg", "bf", "bi", "cv", "kh", "cm", "ca", "bq", "ky", "cf", "td", "je", "cl", "cn", "co", "km", "cg", "cr", "hr", "cu", "cw", "cy", "cz", "ci", "cd", "dk", "dj", "dm", "do", "ec", "eg", "sv", "gq", "er", "ee", "et", "fk", "fo", "fj", "fi", "fr", "gf", "pf", "ga", "gm", "ge", "de", "gh", "gi", "gr", "gl", "gd", "gp", "gt", "gn", "gw", "gy", "ht", "va", "hn", "hk", "hu", "is", "in", "id", "ir", "iq", "ie", "im", "il", "it", "jm", "jp", "jo", "kz", "ke", "kw", "kg", "la", "lv", "lb", "ls", "lr", "ly", "li", "lt", "lu", "mo", "mk", "mg", "mw", "my", "mv", "ml", "mt", "mh", "mq", "mr", "mu", "yt", "mx", "fm", "md", "mc", "mn", "me", "ms", "ma", "mz", "mm", "na", "np", "nl", "nc", "nz", "ni", "ne", "ng", "no", "om", "pk", "ps", "pa", "pg", "py", "pe", "ph", "pl", "pt", "qa", "ro", "ru", "rw", "re", "kr", "kn", "lc", "mf", "pm", "vc", "ws", "sm", "st", "sa", "sn", "rs", "sc", "sl", "sg", "sx", "sk", "si", "sb", "so", "za", "ss", "es", "lk", "bl", "sd", "sr", "sz", "se", "ch", "sy", "tw", "tj", "tz", "th", "tl", "tg", "tt", "tn", "tr", "tc", "ae", "gb", "us", "ug", "ua", "uy", "uz", "vu", "ve", "vn", "wf", "eh", "ye", "zm", "zw"],
+        responsiveDropdown: true,
+        preferredCountries: [],
+        defaultCountry: "fr"
+    });
+</script>
 <script>
     function get_data_from_url(url) {
         var http_req = new XMLHttpRequest();
@@ -52,8 +61,8 @@
         };
 
         var ctx = document.getElementById(canvas_id).getContext('2d');
-        window.myBar = new window.Chart(ctx, {
-            type: 'line',
+        return new window.Chart(ctx, {
+            type: 'bar',
             data: data,
             options: {
                 // Elements options apply to all of the options unless overridden in a dataset
@@ -79,10 +88,6 @@
                     legend: {
                         position: 'top',
                     },
-                    title: {
-                        display: true,
-                        text: 'Chart.js Bar Chart'
-                    },
                     zoom: {
                         pan: {
                             enabled: true,
@@ -92,19 +97,29 @@
                         zoom: {
                             enabled: true,
                             mode: 'x',
+                            speed: 0.1,
                             sensitivity: 0.001
                         }
                     },
                 },
             }
-        });
-
+        })
     }
 
-    var country = document.getElementById("choosecountry")
-    var date = document.getElementById("dateRange")
-    const casesTotal = get_data_from_url("static/graph_data_cases.json")
-    const casesToday = get_data_from_url("static/graph_data_cases_today.json")
-    cases_graph(casesTotal, "BE", "myChart", "Total cases in ");
-    cases_graph(casesToday, "BE", "myChart2", "Daily cases in ");
+    var country = document.getElementById("choosecountry");
+    var date = document.getElementById("dateRange");
+    var countryData = ($("#country").countrySelect("getSelectedCountryData"))["iso2"].toUpperCase();
+    const casesTotal = get_data_from_url("static/graph_data_cases.json");
+    const casesToday = get_data_from_url("static/graph_data_cases_today.json");
+    window.total = cases_graph(casesTotal, countryData, "myChart", "Total cases in ");
+    window.today = cases_graph(casesToday, countryData, "myChart2", "Daily cases in ");
+
+    function update_charts(totalChart, todayChart) {
+        totalChart.destroy();
+        console.log("here");
+        todayChart.destroy();
+        var countryData = ($("#country").countrySelect("getSelectedCountryData"))["iso2"].toUpperCase();
+        window.total = cases_graph(casesTotal, countryData, "myChart", "Total cases in ");
+        window.today = cases_graph(casesToday, countryData, "myChart2", "Daily cases in ");
+    }
 </script>
