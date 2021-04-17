@@ -1,4 +1,5 @@
-print(""""AF",
+print(
+    """"AF",
     "AL",
     "DZ",
     "AD",
@@ -216,4 +217,7 @@ print(""""AF",
     "EH",
     "YE",
     "ZM",
-    "ZW" """.lower().replace("\n", "").replace(" ", ""))
+    "ZW" """.lower()
+    .replace("\n", "")
+    .replace(" ", "")
+)
