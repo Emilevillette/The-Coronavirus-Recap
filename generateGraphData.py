@@ -37,12 +37,35 @@ def generate_graph_data():
         data_deaths_log[country] = {}
         data_recovered_log[country] = {}
 
+    data_cases["GLOBAL"] = {}
+    data_deaths["GLOBAL"] = {}
+    data_recovered["GLOBAL"] = {}
+    data_cases_today["GLOBAL"] = {}
+    data_deaths_today["GLOBAL"] = {}
+    data_recovered_today["GLOBAL"] = {}
+    data_cases_log["GLOBAL"] = {}
+    data_deaths_log["GLOBAL"] = {}
+    data_recovered_log["GLOBAL"] = {}
+
+    global_cases = 0
+    global_deaths = 0
+    global_recovered = 0
+
+    global_cases_log = 0
+    global_deaths_log = 0
+    global_recovered_log = 0
+
     for file in os.scandir("data"):
+        global_cases_today = 0
+        global_deaths_today = 0
+        global_recovered_today = 0
+
+        filename = file.name
+
         try:
             if isinstance(parse(file.name), datetime.date):
                 for country in countries_data["iso_codes"]:
                     try:
-                        filename = file.name
                         with open(
                                 f"data/{filename}/{country}.json", "r"
                         ) as current_country:
@@ -72,12 +95,43 @@ def generate_graph_data():
                             data_recovered_log[country][filename] = log(data_recovered[country][filename])
                         else:
                             data_recovered_log[country][filename] = None
+
+                        global_cases_today += data_cases_today[country][filename]
+                        global_deaths_today += data_deaths_today[country][filename]
+                        global_recovered_today += data_recovered_today[country][filename]
+
                     except FileNotFoundError:
                         print(f"No file named {country}, skipped entry.")
+
+            global_cases += global_cases_today
+            global_deaths += global_deaths_today
+            global_recovered += global_recovered_today
+
+            data_cases_today["GLOBAL"][filename] = global_cases_today
+            data_deaths_today["GLOBAL"][filename] = global_deaths_today
+            data_recovered_today["GLOBAL"][filename] = global_recovered_today
+            data_cases["GLOBAL"][filename] = global_cases
+            data_deaths["GLOBAL"][filename] = global_deaths
+            data_recovered["GLOBAL"][filename] = global_recovered
+
+            if global_cases > 0:
+                data_cases_log["GLOBAL"][filename] = log(global_cases)
+            else:
+                data_cases_log["GLOBAL"][filename] = None
+
+            if global_deaths > 0:
+                data_deaths_log["GLOBAL"][filename] = log(global_deaths)
+            else:
+                data_deaths_log["GLOBAL"][filename] = None
+
+            if global_recovered > 0:
+                data_recovered_log["GLOBAL"][filename] = log(global_recovered)
+            else:
+                data_recovered_log["GLOBAL"][filename] = None
+
         except ParserError as e:
             print(f"{e} (Skipped non datetime file).")
 
-    # TODO: Make a copy of those files in website directory
     with open("data/graph_data/graph_data_cases.json", "w") as write_data:
         json.dump(data_cases, write_data)
     copy2(
