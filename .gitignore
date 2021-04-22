@@ -1,8 +1,6 @@
-data/
 __pychache__/
 .idea/
 .idea/vcs.xml
-*.coviddata
 __pycache__/Downloader.cpython-39.pyc
 *.pyc
 __pycache__/downloadFile.cpython-39.pyc
