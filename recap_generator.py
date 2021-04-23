@@ -10,9 +10,10 @@ import locale
 import os
 from datetime import date, timedelta
 
+from translator import trans
 
 def generate_recap(
-    recap_file, path, user_data, total, yesterday_missing, uuid, test_mode=False
+        recap_file, path, user_data, total, yesterday_missing, uuid, test_mode=False
 ):
     """
 
@@ -51,17 +52,17 @@ def generate_recap(
         total_cases = json.loads(total_file.read())
 
     recap += (
-        language_data["global_cases"].format(
-            total_cases["cases"],
-            total_cases["todayCases"],
-            total_cases["deaths"],
-            total_cases["todayDeaths"],
-        )
-        + "\n"
+            language_data["global_cases"].format(
+                total_cases["cases"],
+                total_cases["todayCases"],
+                total_cases["deaths"],
+                total_cases["todayDeaths"],
+            )
+            + "\n"
     )
 
     with open(
-        path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
+            path + "/vaccine/" + "AA_DAILY_TOTAL_GLOBAL_VACCINE.json", "r"
     ) as vaccine_total_file:
         total_vaccine = json.loads(vaccine_total_file.read())
 
@@ -72,11 +73,11 @@ def generate_recap(
 
     if int(total_vaccine_data[1]) - int(total_vaccine_data[0]) > 0:
         recap += (
-            language_data["global_vaccine"].format(
-                total_vaccine_data[1],
-                int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
-            )
-            + "\n"
+                language_data["global_vaccine"].format(
+                    total_vaccine_data[1],
+                    int(total_vaccine_data[1]) - int(total_vaccine_data[0]),
+                )
+                + "\n"
         )
 
     if len(yesterday_missing) > 0:
@@ -98,15 +99,15 @@ def generate_recap(
 
 
 def generate_per_country_recap(
-    inner_path,
-    user_data,
-    language_data,
-    countries_data,
-    data,
-    test_mode,
-    uuid,
-    treating_missing=False,
-    missing_list=[],
+        inner_path,
+        user_data,
+        language_data,
+        countries_data,
+        data,
+        test_mode,
+        uuid,
+        treating_missing=False,
+        missing_list=[],
 ):
     inner_recap = ""
 
@@ -126,13 +127,26 @@ def generate_per_country_recap(
     no_data_sentence = language_data["no_data"] + "\n"
     still_no_data_sentence = language_data["still_no_data"] + "\n"
 
+    with open("email/email2.html", "r") as inner_country:
+        html_email_country = inner_country.read()
+
+    normal_inner = """{}</li>
+{}
+{}"""
+    inner_vaccine = "<li>A total of {:n} vaccines have been administrated (+ {:n}).</li>"
+
+    missing_inner = "<li>{}</li>"
+
+    with open("email/email3.html", "r") as inner_global:
+        html_email_global = inner_global.read()
+
     with open(f"{inner_path}/AA_to_download.json", "r") as missing_data_file:
         missing_countries = json.load(missing_data_file)
 
     for country in range(len(user_cases)):
         if os.path.isfile(f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json"):
             with open(
-                inner_path + "vaccine/" +
+                    inner_path + "vaccine/" +
                     user_cases[country] + "_VACCINE.json", "r"
             ) as vaccine_file:
                 vaccine_data = json.loads(vaccine_file.read())
@@ -146,48 +160,69 @@ def generate_per_country_recap(
 
         if treating_missing:
             if (
-                data[user_cases[country]]["todayDeaths"] == 0
-                and data[user_cases[country]]["todayCases"] == 0
+                    data[user_cases[country]]["todayDeaths"] == 0
+                    and data[user_cases[country]]["todayCases"] == 0
             ):
-                inner_recap += still_no_data_sentence.format(
-                    countries_data["couples"][user_cases[country]]
-                )
+                inner_recap += html_email_country.format(countries_data["couples"][user_cases[country]],
+                                                         missing_inner.format(still_no_data_sentence))
             else:
-                inner_recap += case_sentence.format(
-                    countries_data["couples"][user_cases[country]],
-                    data[user_cases[country]]["todayDeaths"],
-                    data[user_cases[country]]["todayCases"],
-                )
+                if (
+                        vaccine_data is not None and os.path.isfile(
+                    f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json") and (
+                        user_cases[country] in user_vaccine)
+                ):
+                    if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
+                        temp_vacc = vaccine_sentence.format(
+                            vaccine_delta[1], int(
+                                vaccine_delta[1]) - int(vaccine_delta[0])
+                        )
+                    else:
+                        temp_vacc = ""
+                else:
+                    temp_vacc = ""
+
+                if user_cases[country] in user_critical:
+                    temp_crit = "<li>{:n} people are in a critical state right now.</li>"
+                else:
+                    temp_crit = ""
+
+                inner_recap += html_email_country.format(countries_data["couples"][user_cases[country]],
+                                                         normal_inner.format(case_sentence.format(
+                                                             data[user_cases[country]]["todayDeaths"],
+                                                             data[user_cases[country]]["todayCases"],
+                                                         ), temp_crit, temp_vacc
+                                                         ))
         else:
             if user_cases[country] not in missing_countries:
-                inner_recap += case_sentence.format(
-                    countries_data["couples"][user_cases[country]],
-                    data[user_cases[country]]["todayDeaths"],
-                    data[user_cases[country]]["todayCases"],
-                )
-            else:
-                inner_recap += no_data_sentence.format(
-                    countries_data["couples"][user_cases[country]]
-                )
-                today_missing_countries.append(user_cases[country])
+                if (
+                        vaccine_data is not None and os.path.isfile(
+                    f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json") and (
+                        user_cases[country] in user_vaccine)
+                ):
+                    if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
+                        temp_vacc = vaccine_sentence.format(
+                            vaccine_delta[1], int(
+                                vaccine_delta[1]) - int(vaccine_delta[0])
+                        )
+                    else:
+                        temp_vacc = ""
+                else:
+                    temp_vacc = ""
 
-        if user_cases[country] in user_critical:
-            inner_recap += critical_sentence.format(
-                data[user_cases[country]]["critical"]
-            )
-        if (
-            vaccine_data is not None
-            and os.path.isfile(
-                f"{inner_path}/vaccine/{user_cases[country]}_VACCINE.json"
-            )
-            and (user_cases[country] in user_vaccine)
-        ):
-            if int(vaccine_delta[1]) - int(vaccine_delta[0]) > 0:
-                inner_recap += vaccine_sentence.format(
-                    vaccine_delta[1], int(
-                        vaccine_delta[1]) - int(vaccine_delta[0])
-                )
-        inner_recap += "\n"
+                if user_cases[country] in user_critical:
+                    temp_crit = "<li>{:n} people are in a critical state right now.</li>"
+                else:
+                    temp_crit = ""
+                inner_recap += html_email_country.format(countries_data["couples"][user_cases[country]],
+                                                         normal_inner.format(case_sentence.format(
+                                                             data[user_cases[country]]["todayDeaths"],
+                                                             data[user_cases[country]]["todayCases"]
+                                                         ), temp_crit, temp_vacc
+                                                         ))
+            else:
+                inner_recap += html_email_country.format(countries_data["couples"][user_cases[country]],
+                                                         missing_inner.format(no_data_sentence))
+                today_missing_countries.append(user_cases[country])
 
         if not treating_missing and not test_mode:
             with open(f"User_data/Users/{uuid}.json", "r") as read_user_data:
