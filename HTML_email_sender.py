@@ -1,16 +1,16 @@
 from translator import trans
 from datetime import date
 
-import yagmail
+import gmail_sender
 
 
-def send_HTML_email(language, user, recap, sender, oauth2_file, test_mode=False):
+def send_HTML_email(language, user, recap, sender, test_mode=False):
     email = ""
-    with open("email/email0.html", "r", encoding="UTF-8") as styles:
+    with open("emaildata/email0.html", "r", encoding="UTF-8") as styles:
         email += styles.read()
-    with open("email/email1.html", "r", encoding="UTF-8") as header:
+    with open("emaildata/email1.html", "r", encoding="UTF-8") as header:
         header_data = header.read()
-    with open("email/email4.html", "r", encoding="UTF-8") as footer:
+    with open("emaildata/email4.html", "r", encoding="UTF-8") as footer:
         footer_data = footer.read()
 
     to_be_translated = []
@@ -50,8 +50,7 @@ def send_HTML_email(language, user, recap, sender, oauth2_file, test_mode=False)
 
     print(email)
     if not test_mode:
-        with yagmail.SMTP(sender, oauth2_file=oauth2_file) as yag:
-            yag.send(to=user, subject=f"The Corona Recap {date.today()}", contents=email)
+        gmail_sender.send_email(sender, user, f"Corona Recap {date.today()}", email)
 
 
 if __name__ == "__main__":
@@ -356,7 +355,7 @@ a[x-apple-data-detectors] {
                   <td align="left" style="padding:0;Margin:0;width:270px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr style="border-collapse:collapse">
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:10px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:normal;color:#FFFFFF">Envoyez moi un email:</h3></td>
+                      <td align="center" style="padding:0;Margin:0;padding-bottom:10px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:normal;color:#FFFFFF">Envoyez moi un emaildata:</h3></td>
                      </tr>
                      <tr style="border-collapse:collapse">
                       <td class="es-m-txt-с" align="center" style="padding:0;Margin:0;padding-top:5px;padding-bottom:10px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:normal;color:#FFFFFF"><a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:16px;line-height:24px" href="mailto:coronarecap@gmail.com">coronarecap@gmail.com</a></h3></td>
@@ -384,7 +383,7 @@ a[x-apple-data-detectors] {
                        </table></td>
                      </tr>
                      <tr style="border-collapse:collapse">
-                      <td esdev-links-color="#666666" align="center" class="es-m-txt-с" style="padding:0;Margin:0;padding-top:10px;padding-bottom:20px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">Copyright © 2021&nbsp;The Corona&nbsp;Recap, All rights reserved.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">Vector graphics designed by <a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px" href="http://www.freepik.com/">Freepik</a>&nbsp;and Storyset.com.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">You are receiving this email because you have visited our site or asked us about regular newsletter.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px"><a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px;line-height:18px" class="unsubscribe" href="">Unsubscribe</a></p></td>
+                      <td esdev-links-color="#666666" align="center" class="es-m-txt-с" style="padding:0;Margin:0;padding-top:10px;padding-bottom:20px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">Copyright © 2021&nbsp;The Corona&nbsp;Recap, All rights reserved.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">Vector graphics designed by <a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px" href="http://www.freepik.com/">Freepik</a>&nbsp;and Storyset.com.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px">You are receiving this emaildata because you have visited our site or asked us about regular newsletter.</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;color:#666666;font-size:12px"><a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px;line-height:18px" class="unsubscribe" href="">Unsubscribe</a></p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -398,5 +397,4 @@ a[x-apple-data-detectors] {
   </div>
  </body>
 </html>"""
-    with yagmail.SMTP("coronarecap@gmail.com", oauth2_file="User_data/OAUTH2/OAUTH2.json") as yag:
-        yag.send(to="emilevillette@hotmail.fr", subject="TEST", contents=html)
+    gmail_sender.send_email("coronarecap@gmail.com", "emilevillette@hotmail.fr", f"Corona Recap {date.today()}", html)

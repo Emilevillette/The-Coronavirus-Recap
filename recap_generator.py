@@ -57,7 +57,7 @@ def generate_recap(
     with open(path + total, "r") as total_file:
         total_cases = json.loads(total_file.read())
 
-    with open("email/email3.html", "r") as inner_global:
+    with open("emaildata/email3.html", "r") as inner_global:
         html_email_global = inner_global.read()
 
     with open(
@@ -83,7 +83,7 @@ def generate_recap(
         int(total_vaccine_data[1]) - int(total_vaccine_data[0])))
 
     if len(yesterday_missing) > 0:
-        with open("email/email2.html", "r") as yesterday_file:
+        with open("emaildata/email2.html", "r") as yesterday_file:
             temp_yesterday = yesterday_file.read()
         recap += temp_yesterday
         to_be_translated.append(yesterday_sentence)
@@ -146,7 +146,7 @@ def generate_per_country_recap(
     no_data_sentence = language_data["no_data"]
     still_no_data_sentence = language_data["still_no_data"]
 
-    with open("email/email2.html", "r") as inner_country:
+    with open("emaildata/email2.html", "r") as inner_country:
         html_email_country = inner_country.read()
 
     normal_inner = """<li>{}</li>

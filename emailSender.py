@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
 """
-Sends email to unique mails, NOT meant for mass email sending.
+Sends emaildata to unique mails, NOT meant for mass emaildata sending.
 
 Emile Villette - March 2021
+"""
+
+"""
+DEPRECATED - THIS WONT WORK
 """
 import json
 import os
@@ -24,17 +28,17 @@ def send_email(
     first_email=False,
     test_mode=False,
 ):
-    """Send an email through Gmail.
+    """Send an emaildata through Gmail.
 
-    :param first_email: is this the first email?
+    :param first_email: is this the first emaildata?
     :param oauth2_userfile: file with OAUTH2 google information. See Yagmail doc for more info.
     :param path: path where the data is stored
     :param test_mode: if set to True, doesn't send emails
     :param language: user's preferred language (ISO code, string)
     :param subject: Email subject
     :param content: Email content
-    :param sender: sender email
-    :param recipient: receiver email
+    :param sender: sender emaildata
+    :param recipient: receiver emaildata
     :return: None
     """
     with open("languages/en.json", "r", encoding="utf-8") as language_file:
