@@ -11,6 +11,7 @@ from datetime import date
 
 from Downloader import download_stats
 from emailSender import send_email
+from HTML_email_sender import send_HTML_email
 from recap_generator import generate_recap
 
 
@@ -40,8 +41,8 @@ def main_function(test=True):
         else:
             first_email = False
 
-        print(recap)
-        #check_for_abortion = send_email(
+        send_HTML_email(data["language"], data["email"], recap, "coronarecap@gmail.com", "User_data/OAUTH2/OAUTH2.json", test_mode=test)
+        # check_for_abortion = send_email(
         #    data["language"],
         #    "Recap Coronavirus " + str(date.today()),
         #    recap,
@@ -51,9 +52,9 @@ def main_function(test=True):
         #    "User_data/OAUTH2/OAUTH2.json",
         #    test_mode=test,
         #    first_email=first_email,
-        #)
+        # )
 
-        #if check_for_abortion == "Aborted":
+        # if check_for_abortion == "Aborted":
         #    break
 
         print(

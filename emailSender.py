@@ -54,7 +54,6 @@ def send_email(
     )
 
     translated_content = translator.trans(new_content, "en", language)
-    print(translated_content)
 
     if not test_mode:
         with yagmail.SMTP(sender, oauth2_file=oauth2_userfile) as yag:
