@@ -2,7 +2,7 @@
 
 """
 Emile Villette - October 2020
-Automatic daily email updates on the COVID-19 situation in Belgium
+Automatic daily emaildata updates on the COVID-19 situation in Belgium
 """
 import json
 import os
@@ -11,6 +11,7 @@ from datetime import date
 
 from Downloader import download_stats
 from emailSender import send_email
+from HTML_email_sender import send_HTML_email
 from recap_generator import generate_recap
 
 
@@ -31,6 +32,7 @@ def main_function(test=True):
             "AA_DAILY_TOTAL.json",
             data["yesterday_missing"],
             data["uuid"],
+            data["language"],
             test_mode=False,
         )
 
@@ -39,20 +41,7 @@ def main_function(test=True):
         else:
             first_email = False
 
-        check_for_abortion = send_email(
-            data["language"],
-            "Recap Coronavirus " + str(date.today()),
-            recap,
-            "coronarecap@gmail.com",
-            data["email"],
-            path,
-            "User_data/OAUTH2/OAUTH2.json",
-            test_mode=test,
-            first_email=first_email,
-        )
-
-        if check_for_abortion == "Aborted":
-            break
+        send_HTML_email(data["language"], data["emaildata"], recap, "coronarecap@gmail.com", test_mode=test)
 
         print(
             """
