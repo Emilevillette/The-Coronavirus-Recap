@@ -31,6 +31,7 @@ def main_function(test=True):
             "AA_DAILY_TOTAL.json",
             data["yesterday_missing"],
             data["uuid"],
+            data["language"],
             test_mode=False,
         )
 
@@ -39,20 +40,21 @@ def main_function(test=True):
         else:
             first_email = False
 
-        check_for_abortion = send_email(
-            data["language"],
-            "Recap Coronavirus " + str(date.today()),
-            recap,
-            "coronarecap@gmail.com",
-            data["email"],
-            path,
-            "User_data/OAUTH2/OAUTH2.json",
-            test_mode=test,
-            first_email=first_email,
-        )
+        print(recap)
+        #check_for_abortion = send_email(
+        #    data["language"],
+        #    "Recap Coronavirus " + str(date.today()),
+        #    recap,
+        #    "coronarecap@gmail.com",
+        #    data["email"],
+        #    path,
+        #    "User_data/OAUTH2/OAUTH2.json",
+        #    test_mode=test,
+        #    first_email=first_email,
+        #)
 
-        if check_for_abortion == "Aborted":
-            break
+        #if check_for_abortion == "Aborted":
+        #    break
 
         print(
             """
