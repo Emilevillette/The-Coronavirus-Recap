@@ -9,7 +9,6 @@ Emile Villette - March 2021
 """
 import json
 import os
-import shutil
 import time
 
 import progressbar
@@ -61,12 +60,11 @@ def download_stats(yesterday=False):
     with open(path + "/AA_RawDataProcessed.json", "w") as AA_processed:
         json.dump(processed_json, AA_processed)
 
-    if os.path.exists("{}/AA_to_download.json".format(path)):
-        if not yesterday:
-            with open(f"{path}/AA_rawDataProcessed.json", "r") as check_time:
-                check_update = json.load(check_time)
-            if (start_time - check_update["BE"]["updated"] / 1000) > 10800:
-                os.remove(f"{path}/AA_to_download.json")
+    if os.path.exists("{}/AA_to_download.json".format(path)) and not yesterday:
+        with open(f"{path}/AA_rawDataProcessed.json", "r") as check_time:
+            check_update = json.load(check_time)
+        if (start_time - check_update["BE"]["updated"] / 1000) > 10800:
+            os.remove(f"{path}/AA_to_download.json")
 
     with open("languages/countries.json", "r") as country_file:
         country_list = json.load(country_file)

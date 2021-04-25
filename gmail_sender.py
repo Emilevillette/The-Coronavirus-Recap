@@ -1,3 +1,11 @@
+"""
+Send Emails with Gmail API.
+
+Code sourced from the official Google documentation.
+
+Emile Villette - April 2021
+"""
+
 from __future__ import print_function
 
 import base64
@@ -38,12 +46,12 @@ def send_email(sender, recipient, subject, content):
 
     service = build('gmail', 'v1', credentials=creds)
 
-    message = create_message(sender, recipient, subject, content)
+    message = create_message(recipient, subject, content)
     print(send_message(service, "me", message))
     # Call the Gmail API
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(to, subject, message_text):
     """Create a message for an emaildata.
 
     Args:

@@ -52,7 +52,6 @@ def generate_recap(
 
     recap += today_recap[0]
     to_be_translated = today_recap[1]
-    del today_recap
 
     with open(path + total, "r") as total_file:
         total_cases = json.loads(total_file.read())

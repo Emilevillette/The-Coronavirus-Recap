@@ -51,6 +51,7 @@ def generate_graph_data():
     global_deaths = 0
     global_recovered = 0
 
+    # TODO add global log cases
     global_cases_log = 0
     global_deaths_log = 0
     global_recovered_log = 0

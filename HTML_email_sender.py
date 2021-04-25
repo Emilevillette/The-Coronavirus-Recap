@@ -1,3 +1,8 @@
+"""
+Assemble and send an html Email
+
+Emile Villette - April 2021
+"""
 from translator import trans
 from datetime import date
 

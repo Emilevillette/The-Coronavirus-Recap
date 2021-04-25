@@ -7,7 +7,6 @@ Automatic daily emaildata updates on the COVID-19 situation in Belgium
 import json
 import os
 import time
-from datetime import date
 
 from Downloader import download_stats
 from HTML_email_sender import send_HTML_email
@@ -35,11 +34,6 @@ def main_function(test=True):
             test_mode=False,
         )
 
-        if file == files[0]:
-            first_email = True
-        else:
-            first_email = False
-
         send_HTML_email(data["language"], data["email"], recap, "coronarecap@gmail.com", test_mode=test)
 
         print(
@@ -52,14 +46,13 @@ def main_function(test=True):
 
 if __name__ == "__main__":
     while True:
-        test = input("Test mode (True or False)? >")
-        if test in ["True", "true"]:
-            test = True
+        is_test = input("Test mode (True or False)? >")
+        if is_test in ["True", "true"]:
+            is_test = True
             break
-        elif test in ["False", "false"]:
-            test = False
+        elif is_test in ["False", "false"]:
+            is_test = False
             break
-        else:
-            print("Invalid entry, try again")
+        print("Invalid entry, try again")
 
-    main_function(test=test)
+    main_function(test=is_test)

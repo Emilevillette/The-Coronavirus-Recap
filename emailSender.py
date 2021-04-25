@@ -4,11 +4,10 @@
 Sends emaildata to unique mails, NOT meant for mass emaildata sending.
 
 Emile Villette - March 2021
-"""
 
-"""
 DEPRECATED - THIS WONT WORK
 """
+
 import json
 import os
 
