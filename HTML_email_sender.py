@@ -18,7 +18,12 @@ def send_HTML_email(language, user, recap, sender, test_mode=False):
     newsletter = "Daily newsletter"
     browser = "View in browser"
     title = f"{date.today()}"
-    greeting = f"Hello, {user.split('@')[0]}"
+    name = user.split("@")[0]
+    if "." in name:
+        name = name.replace(".", " ").capitalize()
+    else:
+        name = name.capitalize()
+    greeting = f"Hello, {name}"
     introduction = "Here is your daily COVID-19 recap (according to your chosen countries):"
 
     to_be_translated.append(newsletter)

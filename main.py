@@ -10,7 +10,6 @@ import time
 from datetime import date
 
 from Downloader import download_stats
-from emailSender import send_email
 from HTML_email_sender import send_HTML_email
 from recap_generator import generate_recap
 
@@ -41,7 +40,7 @@ def main_function(test=True):
         else:
             first_email = False
 
-        send_HTML_email(data["language"], data["emaildata"], recap, "coronarecap@gmail.com", test_mode=test)
+        send_HTML_email(data["language"], data["email"], recap, "coronarecap@gmail.com", test_mode=test)
 
         print(
             """
