@@ -23,10 +23,14 @@ def send_HTML_email(language, user, recap, sender, test_mode=False):
     newsletter = "Daily newsletter"
     browser = "View in browser"
     title = f"{date.today()}"
-    name = user.split("@")[0]
-    if "." in name:
-        name = name.replace(".", " ").capitalize()
+    if "." in user[:-3]:
+        name = user.split("@")[0]
+        namelst = name.split(".")
+        name = ""
+        for element in namelst:
+            name += element.capitalize() + " "
     else:
+        name = user.split("@")[0]
         name = name.capitalize()
     greeting = f"Hello, {name}"
     introduction = "Here is your daily COVID-19 recap (according to your chosen countries):"

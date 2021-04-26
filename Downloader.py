@@ -115,7 +115,7 @@ def download_stats(yesterday=False):
                 )
             else:
                 progress_widgets[-1] = progressbar.FormatLabel(
-                    " | {}: OK".format(iso_code)
+                    " | {}: Data OK".format(iso_code)
                 )
 
         else:
@@ -134,7 +134,7 @@ def download_stats(yesterday=False):
                 )
             else:
                 progress_widgets[-1] = progressbar.FormatLabel(
-                    " | {}: OK".format(iso_code)
+                    " | {}: Data OK".format(iso_code)
                 )
 
         # Download the "country"'s vaccine data in the last five days.
