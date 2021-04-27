@@ -7,7 +7,7 @@
     "vaccine detail": "FR,BE",
     "critical": "FR",
     "active cases per 100k": "EX,FR",
-    "recovered today": "BE",
-    "yesterday_missing": []
-  }
+    "recovered today": "BE"
+  },
+  "yesterday_missing": []
 }

@@ -34,4 +34,4 @@ def add_user_in_db(email, language, preferences_countries):
         return True
 
 
-add_user_in_db("lorenz@teamtumbleweed.eu", "ru", "BE,CA,BR,AR,NL,UA")
+add_user_in_db("z33r0v3r@gmail.com", "en", "US,CA,GB,FR,BE,CH,TR,VN,IN")
