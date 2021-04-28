@@ -141,3 +141,4 @@ User_data/OAUTH2/OAUTH2.json
 .idea/
 User_data/OAUTH2/credentials.json
 token.json
+/User_data/archive/
