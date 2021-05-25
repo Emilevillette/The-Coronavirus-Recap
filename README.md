@@ -12,5 +12,5 @@
 ## Installation
 Contact @Emilevillette for instructions, standardized info will be released further along the road.
 
-##Example mail
+## Example mail
 ![example mail](examplemail.png)
