@@ -48,11 +48,11 @@ def main_function(test=True):
 
 if __name__ == "__main__":
     while True:
-        is_test = input("Test mode (True or False)? >")
-        if is_test in ["True", "true"]:
+        is_test = input("Test mode (True or False)? >").lower()
+        if is_test == "true":
             is_test = True
             break
-        elif is_test in ["False", "false"]:
+        elif is_test == "false":
             is_test = False
             break
         print("Invalid entry, try again")
