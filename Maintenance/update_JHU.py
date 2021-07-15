@@ -11,8 +11,7 @@ import pandas
 import progressbar
 from dateutil.parser import parse
 
-import directoryManager
-import downloadFile
+from Scripts import downloadFile, directoryManager
 
 
 def update_raw():

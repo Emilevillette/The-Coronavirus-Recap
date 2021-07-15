@@ -66,7 +66,7 @@ def download_stats(yesterday=False):
         if (start_time - check_update["BE"]["updated"] / 1000) > 10800:
             os.remove(f"{path}/AA_to_download.json")
 
-    with open("languages/countries.json", "r") as country_file:
+    with open("../languages/countries.json", "r") as country_file:
         country_list = json.load(country_file)
 
     if os.path.exists("{}/AA_to_download.json".format(path)):

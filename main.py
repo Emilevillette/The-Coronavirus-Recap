@@ -8,9 +8,9 @@ import json
 import os
 import time
 
-from Downloader import download_stats
+from Scripts.Downloader import download_stats
 from email.HTML_email_sender import send_HTML_email
-from recap_generator import generate_recap
+from Scripts.recap_generator import generate_recap
 
 
 def main_function(test=True):
