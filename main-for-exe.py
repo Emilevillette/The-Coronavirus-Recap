@@ -9,9 +9,8 @@ import os
 import time
 
 from Downloader import download_stats
-from HTML_email_sender import send_HTML_email
+from email.HTML_email_sender import send_HTML_email
 from recap_generator import generate_recap
-from generateGraphData import generate_graph_data
 
 
 def main_function(test=True):

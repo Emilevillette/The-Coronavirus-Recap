@@ -40,7 +40,7 @@ def send_email(
     :param recipient: receiver emaildata
     :return: None
     """
-    with open("languages/en.json", "r", encoding="utf-8") as language_file:
+    with open("../languages/EN.json", "r", encoding="utf-8") as language_file:
         language_data = json.load(language_file)
 
     if os.path.exists(path + "AA_mails_sent.json"):
