@@ -13,7 +13,7 @@ import os
 
 import yagmail
 
-import translator
+from Scripts import translator
 
 
 def send_email(
