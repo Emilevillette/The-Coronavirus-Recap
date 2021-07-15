@@ -23,7 +23,7 @@ def update_raw():
     """
 
     def match_country_info() -> dict:
-        with open("data/2021-03-31/AA_RawDataProcessed.json", "r") as reference_file:
+        with open("../data/2021-03-31/AA_RawDataProcessed.json", "r") as reference_file:
             reference_data = json.load(reference_file)
         # print(reference_data[current_data["countryInfo"]["iso2"]], current_data["countryInfo"]["iso2"])
         current_data["country"] = cases["Country/Region"][j]
@@ -53,27 +53,27 @@ def update_raw():
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
         ".csv",
         "JHU_time_series_cases",
-        "data/JHU_DATA/",
+        "../data/JHU_DATA/",
     )
     downloadFile.download_file(
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
         ".csv",
         "JHU_time_series_deaths",
-        "data/JHU_DATA/",
+        "../data/JHU_DATA/",
     )
     downloadFile.download_file(
         "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv",
         ".csv",
         "JHU_time_series_recovered",
-        "data/JHU_DATA/",
+        "../data/JHU_DATA/",
     )
 
-    with open("languages/countries.json", "r") as countries_file:
+    with open("../languages/countries.json", "r") as countries_file:
         countries_info = json.load(countries_file)
 
-    cases = pandas.read_csv("data/JHU_DATA/JHU_time_series_cases.csv")
-    deaths = pandas.read_csv("data/JHU_DATA/JHU_time_series_deaths.csv")
-    recovered = pandas.read_csv("data/JHU_DATA/JHU_time_series_recovered.csv")
+    cases = pandas.read_csv("../data/JHU_DATA/JHU_time_series_cases.csv")
+    deaths = pandas.read_csv("../data/JHU_DATA/JHU_time_series_deaths.csv")
+    recovered = pandas.read_csv("../data/JHU_DATA/JHU_time_series_recovered.csv")
 
     example = {
         "updated": 0,

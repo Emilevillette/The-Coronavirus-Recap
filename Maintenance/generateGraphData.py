@@ -13,7 +13,7 @@ from dateutil.parser import *
 
 
 def generate_graph_data():
-    with open("languages/countries.json", "r") as countries_file:
+    with open("../languages/countries.json", "r") as countries_file:
         countries_data = json.load(countries_file)
 
     data_cases = {}
@@ -56,7 +56,7 @@ def generate_graph_data():
     global_deaths_log = 0
     global_recovered_log = 0
 
-    for file in os.scandir("data"):
+    for file in os.scandir("../data"):
         global_cases_today = 0
         global_deaths_today = 0
         global_recovered_today = 0
@@ -139,65 +139,65 @@ def generate_graph_data():
         except ParserError as e:
             print(f"{e} (Skipped non datetime file).")
 
-    with open("data/graph_data/graph_data_cases.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_cases.json", "w") as write_data:
         json.dump(data_cases, write_data)
     copy2(
-        "data/graph_data/graph_data_cases.json", "website/static/graph_data_cases.json"
+        "../data/graph_data/graph_data_cases.json", "website/static/graph_data_cases.json"
     )
 
-    with open("data/graph_data/graph_data_cases_today.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_cases_today.json", "w") as write_data:
         json.dump(data_cases_today, write_data)
     copy2(
-        "data/graph_data/graph_data_cases_today.json",
+        "../data/graph_data/graph_data_cases_today.json",
         "website/static/graph_data_cases_today.json",
     )
 
-    with open("data/graph_data/graph_data_deaths.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_deaths.json", "w") as write_data:
         json.dump(data_deaths, write_data)
     copy2(
-        "data/graph_data/graph_data_deaths.json",
+        "../data/graph_data/graph_data_deaths.json",
         "website/static/graph_data_deaths.json",
     )
 
-    with open("data/graph_data/graph_data_deaths_today.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_deaths_today.json", "w") as write_data:
         json.dump(data_deaths_today, write_data)
     copy2(
-        "data/graph_data/graph_data_deaths_today.json",
+        "../data/graph_data/graph_data_deaths_today.json",
         "website/static/graph_data_deaths_today.json",
     )
 
-    with open("data/graph_data/graph_data_recovered.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_recovered.json", "w") as write_data:
         json.dump(data_recovered, write_data)
     copy2(
-        "data/graph_data/graph_data_recovered.json",
+        "../data/graph_data/graph_data_recovered.json",
         "website/static/graph_data_recovered.json",
     )
 
-    with open("data/graph_data/graph_data_recovered_today.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_recovered_today.json", "w") as write_data:
         json.dump(data_recovered_today, write_data)
     copy2(
-        "data/graph_data/graph_data_recovered_today.json",
+        "../data/graph_data/graph_data_recovered_today.json",
         "website/static/graph_data_recovered_today.json",
     )
 
-    with open("data/graph_data/graph_data_cases_log.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_cases_log.json", "w") as write_data:
         json.dump(data_cases_log, write_data)
     copy2(
-        "data/graph_data/graph_data_cases_log.json",
+        "../data/graph_data/graph_data_cases_log.json",
         "website/static/graph_data_cases_log.json",
     )
 
-    with open("data/graph_data/graph_data_deaths_log.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_deaths_log.json", "w") as write_data:
         json.dump(data_deaths_log, write_data)
     copy2(
-        "data/graph_data/graph_data_deaths_log.json",
+        "../data/graph_data/graph_data_deaths_log.json",
         "website/static/graph_data_deaths_log.json",
     )
 
-    with open("data/graph_data/graph_data_recovered_log.json", "w") as write_data:
+    with open("../data/graph_data/graph_data_recovered_log.json", "w") as write_data:
         json.dump(data_recovered_log, write_data)
     copy2(
-        "data/graph_data/graph_data_recovered_log.json",
+        "../data/graph_data/graph_data_recovered_log.json",
         "website/static/graph_data_recovered_log.json",
     )
 

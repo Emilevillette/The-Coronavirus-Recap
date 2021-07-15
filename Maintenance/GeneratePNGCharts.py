@@ -11,7 +11,7 @@ import os
 def generate_data(cases=(False, 0), deaths=(False, 0), recovered=(False, 0), cases_per_100k=(False, 0),
                   deaths_per_100k=(False, 0), recovered_per_100k=(False, 0)):
     today = date.today()
-    if today not in os.listdir("data/"):
+    if today not in os.listdir("../data/"):
         raise FileNotFoundError(f"NO DIRECTORY FOR date '{today}'.")
     else:
         with open(f"data/{today}/AA_RawDataProcessed.json", "r") as data_file:
